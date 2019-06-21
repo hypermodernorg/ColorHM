@@ -1,0 +1,58 @@
+﻿<Controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:ColorHM"
+        xmlns:Properties="clr-namespace:ColorHM.Properties" x:Name="ColorHM" x:Class="ColorHM.MainWindow"
+        mc:Ignorable="d"
+        Title="ColorHM" Height="486.667" Width="600" WindowTitleBrush="Black" Background="{x:Null}" TitleCaps="False" EnableDWMDropShadow="True">
+    <Grid Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="225*"/>
+            <ColumnDefinition Width="110*"/>
+            <ColumnDefinition Width="258*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="37"/>
+
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TabControl x:Name="TabControl1" Grid.Row="7" Margin="0" Background="Black" Controls:TabControlHelper.UnderlineSelectedBrush="#CCFFFFFF" Controls:TabControlHelper.UnderlineMouseOverSelectedBrush="White" Controls:TabControlHelper.UnderlineMouseOverBrush="White" Controls:TabControlHelper.Underlined="SelectedTabItem" Grid.ColumnSpan="3"/>
+        <Slider x:Name="alphaSlider" ToolTip="Slide to add or remove transparency." Style="{DynamicResource FlatSlider}" Margin="0,7.337,0,0" Background="#3FFFFF00"  Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="4" VerticalAlignment="Top" Foreground="#3FFFFF00"/>
+        <Slider x:Name="redSlider" ToolTip="Slide to add red." Style="{DynamicResource FlatSlider}" VerticalAlignment="Top" Background="#FF320000"   Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="1" Margin="0,7.332,0,0" Controls:SliderHelper.ThumbFillHoverBrush="#FF838181" Foreground="Red"/>
+        <Slider x:Name="greenSlider" ToolTip="Slide to add green." Style="{DynamicResource FlatSlider}" Margin="0,7.383,0,0" VerticalAlignment="Top" Maximum="255" Minimum="0" Background="#FF003200" ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="2" Foreground="Lime"/>
+        <Slider x:Name="blueSlider" ToolTip="Slide to add blue." Style="{DynamicResource FlatSlider}" VerticalAlignment="Top" Maximum="255" Minimum="0" Background="#FF000032"  ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="3" Margin="0,7.337,0,0" BorderBrush="White" Foreground="Blue"/>
+        <Rectangle x:Name="TopRectangle" Fill="#FF1C1C1C" HorizontalAlignment="Left" Height="163" Margin="10,0,0,0"  VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Grid.Row="1" Panel.ZIndex="1"/>
+        <TextBox x:Name="redTextBox" HorizontalAlignment="Left" Height="26" Margin="0.126,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="2" Grid.Row="1"/>
+        <TextBox x:Name="alphaTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="4"/>
+        <TextBox x:Name="blueTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="3"/>
+        <TextBox x:Name="greenTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="2"/>
+        <TextBox x:Name="hexTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="#FF000000" VerticalAlignment="Top" Width="73" Margin="110.2,0.4,0,0" Background="#FF252525" Foreground="White" TextAlignment="Center" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2"/>
+        <Label Content="HEX" HorizontalAlignment="Left" Height="17" Margin="77.8,4.4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Grid.Column="2" Grid.Row="6"/>
+        <Label Content="A" HorizontalAlignment="Left" Height="17" Margin="43.126,2.337,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="4"/>
+        <Label Content="B" HorizontalAlignment="Left" Height="17" Margin="43.126,4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="3"/>
+        <Label Content="G" HorizontalAlignment="Left" Height="17" Margin="43.126,4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="2"/>
+        <Label Content="R" HorizontalAlignment="Left" Height="17" Margin="43.126,4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="1"/>
+        <Button x:Name="GetColorFromScreen" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material eyedropper}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="Button_Click_1" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0.2,0.4,0,0" ToolTip="Get a color from the screen."/>
+        <Rectangle x:Name="TopRectangle_Back" HorizontalAlignment="Left" Height="163" Margin="10,0,0,0"  VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Grid.Row="1">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button x:Name="AddToPalette" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material plus}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="AddToPalette_Click" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="32.2,0.4,0,0" ToolTip="Add the color to the current palette."/>
+        <Slider x:Name="lightnesSlider" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,6,0.2,0" Value="1" Background="#3FFFFFFF"  Maximum="1" Minimum="0" ValueChanged="LightnesSlider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="5" VerticalAlignment="Top" Foreground="#3FFFFFFF" BorderBrush="Yellow"/>
+    </Grid>
+</Controls:MetroWindow>
