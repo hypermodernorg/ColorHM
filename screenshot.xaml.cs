@@ -70,6 +70,7 @@ namespace ColorHM
    
    
             var xy = System.Windows.Forms.Cursor.Position;
+            var xyb = new System.Windows.Point(xy.X, xy.Y);
  
             var hdc = GetWindowDC(0);
             var intColor = GetPixel(hdc, xy.X, xy.Y);
@@ -82,12 +83,13 @@ namespace ColorHM
             shRec.Height = 60;
             shRec.Fill = brush;
             Thickness position = new Thickness();
-            position.Top = (int)factor * (int)xy.Y +5 ;
-            position.Left = (int)factor * (int)xy.X +5;
 
+            var xyc = this.PointFromScreen(xyb);
+            position.Top = (int)xyc.Y -70;
+            position.Left = (int)xyc.X -70;
             shRec.Margin = position;
 
-           
+            
            
 
         }
