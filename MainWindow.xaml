@@ -13,13 +13,15 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="226*"/>
             <ColumnDefinition Width="110*"/>
-            <ColumnDefinition Width="69*"/>
+            <ColumnDefinition Width="37*"/>
+            <ColumnDefinition Width="32*"/>
             <ColumnDefinition Width="110*"/>
-            <ColumnDefinition Width="78*"/>
+            <ColumnDefinition Width="36*"/>
+            <ColumnDefinition Width="43*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="26"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
@@ -29,24 +31,24 @@
 
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl x:Name="TabControl1" Grid.Row="6" Margin="0,36.4,-0.4,-0.2" Background="Black" Controls:TabControlHelper.UnderlineSelectedBrush="#CCFFFFFF" Controls:TabControlHelper.UnderlineMouseOverSelectedBrush="White" Controls:TabControlHelper.UnderlineMouseOverBrush="White" Controls:TabControlHelper.Underlined="SelectedTabItem" Grid.ColumnSpan="5" Grid.RowSpan="2"/>
-        <Slider x:Name="alphaSlider" ToolTip="Slide to add or remove transparency." Style="{DynamicResource FlatSlider}" Margin="0.6,7.6,68.6,0" Background="#3FFFFF00"  Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="4" VerticalAlignment="Top" Foreground="#3FFFFF00" Grid.ColumnSpan="2"/>
-        <Slider x:Name="redSlider" ToolTip="Slide to add red." Style="{DynamicResource FlatSlider}" VerticalAlignment="Top" Background="#FF320000"   Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="1" Margin="0.6,7.4,68.6,0" Controls:SliderHelper.ThumbFillHoverBrush="#FF838181" Foreground="Red" Grid.ColumnSpan="2"/>
-        <Slider x:Name="greenSlider" ToolTip="Slide to add green." Style="{DynamicResource FlatSlider}" Margin="0.6,6.8,68.6,0" VerticalAlignment="Top" Maximum="255" Minimum="0" Background="#FF003200" ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="2" Foreground="Lime" Grid.ColumnSpan="2"/>
-        <Slider x:Name="blueSlider" ToolTip="Slide to add blue." Style="{DynamicResource FlatSlider}" VerticalAlignment="Top" Maximum="255" Minimum="0" Background="#FF000032"  ValueChanged="Slider_ValueChanged" Grid.Column="1" Height="12" Grid.Row="3" Margin="0.6,7.2,68.6,0" BorderBrush="White" Foreground="Blue" Grid.ColumnSpan="2"/>
-        <Rectangle x:Name="TopRectangle" Fill="#FF1C1C1C" HorizontalAlignment="Left" Height="163" Margin="10,0.4,0,0"  VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Grid.Row="1" Panel.ZIndex="1"/>
-        <TextBox x:Name="redTextBox" HorizontalAlignment="Left" Height="26" Margin="1.2,0.4,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="35" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="2" Grid.RowSpan="2" Grid.Row="1"/>
-        <TextBox x:Name="alphaTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="35" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="1.2,25.2,0,0" Grid.RowSpan="2"/>
-        <TextBox x:Name="blueTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="35" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="1.2,0.2,0,0" Grid.RowSpan="2"/>
-        <TextBox x:Name="greenTextBox" Height="22" TextWrapping="Wrap" Text="0" Width="36" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="2" Margin="1.2,0.8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="2"/>
-        <TextBox x:Name="hexTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="#FF000000" VerticalAlignment="Top" Width="73" Margin="1.2,0.4,0,0" Background="#FF252525" Foreground="White" TextAlignment="Center" BorderBrush="{x:Null}" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2"/>
-        <Label Content="HEX" HorizontalAlignment="Left" Height="17" Margin="9.4,4.4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Grid.Column="3" Grid.Row="6"/>
-        <Label Content="A" HorizontalAlignment="Left" Height="17" Margin="43.2,2.6,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"/>
-        <Label Content="B" HorizontalAlignment="Left" Height="17" Margin="43.2,4.2,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2"/>
-        <Label Content="G" HorizontalAlignment="Left" Height="17" Margin="43.2,3.8,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2"/>
-        <Label Content="R" HorizontalAlignment="Left" Height="17" Margin="43.2,4.4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <Button x:Name="GetColorFromScreen" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material eyedropper}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="Button_Click_1" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0.6,0.4,0,0" ToolTip="Get a color from the screen."/>
-        <Rectangle x:Name="TopRectangle_Back" HorizontalAlignment="Left" Height="163" Margin="10,0.4,0,0"  VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Grid.Row="1">
+        <TabControl x:Name="TabControl1" Grid.Row="6" Margin="0,36.4,-0.4,-0.2" Background="Black" Controls:TabControlHelper.UnderlineSelectedBrush="#CCFFFFFF" Controls:TabControlHelper.UnderlineMouseOverSelectedBrush="White" Controls:TabControlHelper.UnderlineMouseOverBrush="White" Controls:TabControlHelper.Underlined="SelectedTabItem" Grid.ColumnSpan="7" Grid.RowSpan="2"/>
+        <Slider x:Name="alphaSlider" ToolTip="Slide to add or remove transparency." Style="{DynamicResource FlatSlider}" Margin="0.4,6.6,1,7" Background="#3FFFFF00"  Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Height="12" Grid.Row="4" VerticalAlignment="Center" Foreground="#3FFFFF00" Grid.Column="1"/>
+        <Slider x:Name="redSlider" ToolTip="Slide to add red." Style="{DynamicResource FlatSlider}" Background="#FF320000"   Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Height="12" Grid.Row="1" Margin="0.4,6.6,1,10.2" Controls:SliderHelper.ThumbFillHoverBrush="#FF838181" Foreground="Red" VerticalAlignment="Center" Grid.Column="1"/>
+        <Slider x:Name="greenSlider" ToolTip="Slide to add green." Style="{DynamicResource FlatSlider}" Margin="0.4,6.8,1,6.8" VerticalAlignment="Center" Maximum="255" Minimum="0" Background="#FF003200" ValueChanged="Slider_ValueChanged" Height="12" Grid.Row="2" Foreground="Lime" Grid.Column="1"/>
+        <Slider x:Name="blueSlider" ToolTip="Slide to add blue." Style="{DynamicResource FlatSlider}" VerticalAlignment="Center" Maximum="255" Minimum="0" Background="#FF000032"  ValueChanged="Slider_ValueChanged" Height="12" Grid.Row="3" Margin="0.4,7.2,1,6.4" BorderBrush="White" Foreground="Blue" Grid.Column="1"/>
+        <Rectangle x:Name="TopRectangle" Fill="#FF1C1C1C" HorizontalAlignment="Left" Height="163" Margin="10,3.6,0,0"  VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Grid.Row="1" Panel.ZIndex="1"/>
+        <TextBox x:Name="redTextBox" Margin="1,3.6,0.8,22.8" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"/>
+        <TextBox x:Name="alphaTextBox" TextWrapping="Wrap" Text="255" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="1,25.2,0.8,0" Grid.RowSpan="2"/>
+        <TextBox x:Name="blueTextBox" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="1,0.2,0.8,25" Grid.RowSpan="2"/>
+        <TextBox x:Name="greenTextBox" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="0,26.6,0.8,25.4" Grid.RowSpan="3"/>
+        <TextBox x:Name="hexTextBox" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="#FF000000" VerticalAlignment="Top" Width="73" Margin="1,0.4,0,0" Background="#FF252525" Foreground="White" TextAlignment="Center" BorderBrush="{x:Null}" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="3"/>
+        <Label Content="HEX" HorizontalAlignment="Left" Height="17" Margin="9.2,4.4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Grid.Column="4" Grid.Row="6"/>
+        <Label Content="A" Height="17" Margin="0.2,4.6,0,4" VerticalAlignment="Center" Width="20" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left"/>
+        <Label Content="B" Height="17" Margin="0.2,4.2,0,4.4" VerticalAlignment="Center" Width="20" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left"/>
+        <Label Content="G" Height="16" Margin="0.2,4.8,0,4.8" VerticalAlignment="Center" Width="20" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left"/>
+        <Label Content="R" Margin="0.2,4.6,0,8.2" Width="20" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="3" Grid.Row="1" MinWidth="2" HorizontalAlignment="Left" VerticalAlignment="Center" Height="16"/>
+        <Button x:Name="GetColorFromScreen" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material eyedropper}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="Button_Click_1" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0.4,0.4,0,0" ToolTip="Get a color from the screen."/>
+        <Rectangle x:Name="TopRectangle_Back" HorizontalAlignment="Left" Height="163" Margin="10,3.6,0,0"  VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Grid.Row="1">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -54,15 +56,17 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Button x:Name="AddToPalette" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material plus}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="AddToPalette_Click" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="32.6,0.4,0,0" ToolTip="Add the color to the current palette."/>
-        <Slider x:Name="lightnesSlider" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0,7.4,0,0" Value="1" Background="#3FFFFFFF"  Maximum="1" Minimum="0" ValueChanged="LightnesSlider_ValueChanged" Grid.Column="3" Height="12" Grid.Row="1" VerticalAlignment="Top" Foreground="#3FFFFFFF" BorderBrush="Yellow"/>
-        <Slider x:Name="lightnesSlider_Copy" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0,7.2,0,0" Value="1" Background="#3FFFFFFF"  Maximum="1" Minimum="0" ValueChanged="LightnesSlider_ValueChanged" Grid.Column="3" Height="12" Grid.Row="3" VerticalAlignment="Top" Foreground="#3FFFFFFF" BorderBrush="Yellow"/>
-        <Slider x:Name="lightnesSlider_Copy1" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0,7.8,0,0" Value="1" Background="#3FFFFFFF"  Maximum="1" Minimum="0" ValueChanged="LightnesSlider_ValueChanged" Grid.Column="3" Height="12" Grid.Row="2" VerticalAlignment="Top" Foreground="#3FFFFFFF" BorderBrush="Yellow"/>
-        <TextBox x:Name="redTextBox_Copy" HorizontalAlignment="Left" Height="26" Margin="109.4,0.4,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="3" Grid.RowSpan="2" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="redTextBox_Copy1" HorizontalAlignment="Left" Height="26" Margin="109.4,0.2,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="redTextBox_Copy2" HorizontalAlignment="Left" Height="26" Margin="109.4,0.8,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="38" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
-        <Label Content="H" HorizontalAlignment="Left" Height="17" Margin="43.8,3.4,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="4" Grid.Row="1"/>
-        <Label Content="L" HorizontalAlignment="Left" Height="17" Margin="42.8,2.2,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="4" Grid.Row="3"/>
-        <Label Content="S" HorizontalAlignment="Left" Height="17" Margin="42.8,1.8,0,0" VerticalAlignment="Top" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="4" Grid.Row="2"/>
+        <Button x:Name="AddToPalette" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material plus}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="AddToPalette_Click" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="32.4,0.4,0,0" ToolTip="Add the color to the current palette."/>
+    
+        <Slider x:Name="hueSlider" Minimum="0" Maximum="360" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,6.6,0.4,10.2" Value="1"   Grid.Column="4" Height="12" Grid.Row="1" VerticalAlignment="Center" BorderBrush="White" RenderTransformOrigin="0.5,0.5"/>
+        <Slider x:Name="lightnesSlider" Minimum="0" Maximum="1" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,7.2,0.4,6.4" Value="1" Background="#3FFFFFFF" Grid.Column="4" Height="12" Grid.Row="3" VerticalAlignment="Center" Foreground="#3FFFFFFF" BorderBrush="White" HorizontalContentAlignment="Left"/>
+        <Slider x:Name="saturationSlider" Minimum="0" Maximum="1" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,6.8,0.4,6.8" Value="1" Background="#3FFFFFFF"    Grid.Column="4" Height="12" Grid.Row="2" VerticalAlignment="Center" Foreground="#3FFFFFFF" BorderBrush="White"/>
+       
+        <TextBox x:Name="hueTextBox" Margin="0.6,3.6,0.4,22.8" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="5" Grid.Row="1" Grid.RowSpan="2"/>
+        <TextBox x:Name="lightnessTextBox" Margin="0.6,0.2,0.4,25" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="5" Grid.Row="3" Grid.RowSpan="2"/>
+        <TextBox x:Name="saturationTextBox" Margin="0.6,26.6,0.4,25.4" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="5" Grid.Row="1" Grid.RowSpan="3"/>
+        <Label Content="H" HorizontalAlignment="Left" Height="17" Margin="0.6,4.6,0,7.2" VerticalAlignment="Center" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="6" Grid.Row="1"/>
+        <Label Content="L" HorizontalAlignment="Left" Height="17" Margin="0.6,4.2,0,4.4" VerticalAlignment="Center" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="6" Grid.Row="3"/>
+        <Label Content="S" HorizontalAlignment="Left" Height="16" Margin="0.6,4.8,0,4.8" VerticalAlignment="Center" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="6" Grid.Row="2"/>
     </Grid>
 </Controls:MetroWindow>

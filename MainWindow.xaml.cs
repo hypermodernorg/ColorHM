@@ -199,6 +199,8 @@ namespace ColorHM
                     {
                         //MessageBox.Show(color);
                         Color newColor = (Color)ColorConverter.ConvertFromString(color);
+                        
+
                         Brush newBrush = new SolidColorBrush(newColor);
                         var rec = new ColorHM.Properties.UserControl1();
                         rec.rectangleUC.Fill = newBrush;
@@ -280,6 +282,11 @@ namespace ColorHM
             int cB = (int)blueSlider.Value;     blueTextBox.Text = cB.ToString();
             int cA = (int)alphaSlider.Value;    alphaTextBox.Text = cA.ToString();
 
+            RgbToHls(cR, cG, cB, out double h, out double l, out double s);
+            hueTextBox.Text = h.ToString(); hueSlider.Value = h;
+            saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
+            lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
+
             Brush x = TopRectangle.Fill;
 
             Brush r = redSlider.Foreground;
@@ -344,33 +351,7 @@ namespace ColorHM
             FirstWrapPanelInTabControl.Children.Add(x); // Add the rectangle to the selected TabItem.
         }
 
-        private void LightnesSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            double cL = (double)lightnesSlider.Value; //lightnesSlider.Text = cR.ToString();
-            SolidColorBrush x = TopRectangle.Fill as SolidColorBrush;
-            Color color = x.Color;
-            //int cR = color.R; double cRd = (double)cR * cL; cR = (int)cRd; color.R = (byte)cR;
-            //int cG = color.G; double cGd = (double)cG * cL; cG = (int)cGd; color.G = (byte)cG;
-            //int cB = color.B; double cBd = (double)cB * cL; cB = (int)cBd; color.B = (byte)cB;
 
-            int cR = (int)redSlider.Value; redTextBox.Text = cR.ToString();
-            int cG = (int)greenSlider.Value; greenTextBox.Text = cG.ToString();
-            int cB = (int)blueSlider.Value; blueTextBox.Text = cB.ToString();
-            int cA = (int)alphaSlider.Value; alphaTextBox.Text = cA.ToString();
-
-            double cRL = (double)cR * cL;
-            double cGL = (double)cG * cL;
-            double cBL = (double)cB * cL;
-            byte rByte = (byte)cRL;
-            byte gByte = (byte)cGL;
-            byte bByte = (byte)cBL;
-
-            //MessageBox.Show(crlLine.ToString());
-            Color colorNew = Color.FromArgb((byte)cA, rByte, gByte, bByte);
-            //redSlider.Value = rByte;
-            TopRectangle.Fill = new SolidColorBrush(colorNew);
-
-        }
         // Convert an RGB value into an HLS value.
         public static void RgbToHls(int r, int g, int b,
             out double h, out double l, out double s)
