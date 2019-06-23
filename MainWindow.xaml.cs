@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Dsafa.WpfColorPicker;
+
 using System.Data;
 using System.Data.SQLite;
 
@@ -34,6 +34,12 @@ namespace ColorHM
             CleanScreenshots();
             alphaSlider.Value = 255;
             GetPalettes();
+            Color c = new Color();
+            c.R = 82;
+            c.G = 254;
+            c.B = 129;
+
+            RectangleChange(c);
             
 
         }
@@ -58,6 +64,10 @@ namespace ColorHM
             redSlider.Value = (int)color.R; redTextBox.Text = color.R.ToString();
             greenSlider.Value = (int)color.G; greenTextBox.Text = color.G.ToString();
             blueSlider.Value = (int)color.B; blueTextBox.Text = color.B.ToString();
+            RgbToHls((int)color.R, (int)color.G, (int)color.B, out double h, out double l, out double s);
+            hueTextBox.Text = h.ToString(); hueSlider.Value = h;
+            saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
+            lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
 
         }
 
@@ -275,6 +285,13 @@ namespace ColorHM
 
         }
 
+        private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            int cH = (int)hueSlider.Value; //hueTextBox.Text = cH.ToString();
+            double cS = (double)saturationSlider.Value; //saturationTextBox.Text = cS.ToString();
+            //double cL = lightnesSlider.Value; //lightnessTextBox.Text = cL.ToString();
+        }
+
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int cR = (int)redSlider.Value;      redTextBox.Text = cR.ToString();
@@ -282,10 +299,10 @@ namespace ColorHM
             int cB = (int)blueSlider.Value;     blueTextBox.Text = cB.ToString();
             int cA = (int)alphaSlider.Value;    alphaTextBox.Text = cA.ToString();
 
-            RgbToHls(cR, cG, cB, out double h, out double l, out double s);
-            hueTextBox.Text = h.ToString(); hueSlider.Value = h;
-            saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
-            lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
+            //RgbToHls(cR, cG, cB, out double h, out double l, out double s);
+            //hueTextBox.Text = h.ToString(); hueSlider.Value = h;
+            //saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
+            //lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
 
             Brush x = TopRectangle.Fill;
 
