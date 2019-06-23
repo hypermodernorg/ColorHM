@@ -25,11 +25,7 @@ namespace ColorHM
         {
             string screenShotDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\screenshots";
             Directory.CreateDirectory(screenShotDirectory);
-            string[] filePaths = Directory.GetFiles(screenShotDirectory);
-            foreach (string filePath in filePaths)
-            {
-                File.Delete(filePath);
-            }
+
             MainWindow newRec = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             //newRec.WindowState = System.Windows.WindowState.Minimized;
             newRec.Hide();
@@ -52,7 +48,7 @@ namespace ColorHM
             bitmap.Dispose();
 
             Screenshot screenshot = new Screenshot();
-            screenshot.screenshotImage.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + screenshotFile, UriKind.Absolute));
+            screenshot.screenshotImage.Source = new BitmapImage(new Uri(screenShotDirectory + "\\" + screenshotFile, UriKind.Absolute));
             
             screenshot.Show();
             
