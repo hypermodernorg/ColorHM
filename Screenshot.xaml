@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="Screenshot" Height="450" Width="800" WindowState="Maximized" Cursor="Cross" ShowInTaskbar="False" WindowStyle="None">
     <Grid>
-        <Image x:Name="screenshotImage" Margin="0" MouseLeftButtonDown="ScreenshotImage_MouseLeftButtonDown"/>
+        <Image x:Name="screenshotImage" Margin="0" MouseLeftButtonDown="ScreenshotImage_MouseLeftButtonDown" MouseMove="ScreenshotImage_MouseMove" />
+        <Rectangle x:Name="shRec" Fill ="#FF000000" HorizontalAlignment="Left" Height="70" Margin="646,55,0,0" Stroke="White" VerticalAlignment="Top" Width="70"/>
 
     </Grid>
 </Window>
