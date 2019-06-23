@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,13 @@ namespace ColorHM
     {
         public void TakeScreenShot()
         {
-
+            string screenShotDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\screenshots";
+            Directory.CreateDirectory(screenShotDirectory);
+            string[] filePaths = Directory.GetFiles(screenShotDirectory);
+            foreach (string filePath in filePaths)
+            {
+                File.Delete(filePath);
+            }
             MainWindow newRec = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             //newRec.WindowState = System.Windows.WindowState.Minimized;
             newRec.Hide();
@@ -37,7 +44,7 @@ namespace ColorHM
             {
 
                 g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
-                bitmap.Save(screenshotFile);  // saves the image
+                bitmap.Save(screenShotDirectory + "\\" + screenshotFile);  // saves the image
                 screenSize = Screen.PrimaryScreen.Bounds.Size;
                 g.Dispose();
                 

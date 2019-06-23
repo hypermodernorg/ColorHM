@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -32,6 +33,7 @@ namespace ColorHM
             InitializeComponent();
             alphaSlider.Value = 255;
             GetPalettes();
+
         }
 
 
