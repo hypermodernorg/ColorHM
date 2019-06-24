@@ -287,6 +287,7 @@ namespace ColorHM
 
         private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            //! Prevent the recursion error between rgba sliders and hsl sliders
             if (hueSlider.IsFocused == true || saturationSlider.IsFocused == true || lightnesSlider.IsFocused == true)
             {
                 int h = (int)hueSlider.Value; hueTextBox.Text = h.ToString();
@@ -300,12 +301,15 @@ namespace ColorHM
                 Color argbColor = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
                 var x = new SolidColorBrush(argbColor);
                 TopRectangle.Fill = x;
+                hexTextBox.Text = x.ToString();
             }
 
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+
+            //! Prevent the recursion error between rgba sliders and hsl sliders
             if (redSlider.IsFocused == true || greenSlider.IsFocused == true || blueSlider.IsFocused == true || alphaSlider.IsFocused == true)
             {
                 int cR = (int)redSlider.Value; redTextBox.Text = cR.ToString();
