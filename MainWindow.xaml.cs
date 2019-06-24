@@ -40,7 +40,7 @@ namespace ColorHM
             c.B = 129;
 
             RectangleChange(c);
-            
+
 
         }
 
@@ -58,7 +58,7 @@ namespace ColorHM
         //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         public void RectangleChange(Color color)
         {
-            
+
             Brush brush = new SolidColorBrush(color);
             //TopRectangle.Fill = brush;
             redSlider.Value = (int)color.R; redTextBox.Text = color.R.ToString();
@@ -105,7 +105,7 @@ namespace ColorHM
         {
             string paletteName = "+";
             var ti = new TabItem();
-            
+
             Label label = new Label();
             label.Content = paletteName;
             label.MouseLeftButtonDown += Label_MouseLeftButtonDown;
@@ -157,7 +157,7 @@ namespace ColorHM
             SQLiteDataAdapter dt = new SQLiteDataAdapter(sqlite_cmd);
             DataTable palettesDT = new DataTable();
             dt.Fill(palettesDT);
-            
+
             // If there are no palettes, create one and rerun the query.
             if (palettesDT.Rows.Count == 0)
             {
@@ -193,7 +193,7 @@ namespace ColorHM
 
                     Background = Brushes.Transparent,
                     Text = row["palette_name"].ToString(),
-               
+
                 };
 
                 string colors = row["colors"].ToString();
@@ -209,7 +209,7 @@ namespace ColorHM
                     {
                         //MessageBox.Show(color);
                         Color newColor = (Color)ColorConverter.ConvertFromString(color);
-                        
+
 
                         Brush newBrush = new SolidColorBrush(newColor);
                         var rec = new ColorHM.Properties.UserControl1();
@@ -233,12 +233,12 @@ namespace ColorHM
 
         public void SavePalette(object sender, RoutedEventArgs e)
         {
-        
+
             dynamic selectedTab = TabControl1.SelectedContent;
             dynamic selectedTabHeader = TabControl1.SelectedItem;
-            string selectedTabHeaderText = selectedTabHeader.Header.Text.ToString(); 
-      
-           
+            string selectedTabHeaderText = selectedTabHeader.Header.Text.ToString();
+
+
             dynamic wrapChildren = selectedTab.Children;
             StringBuilder paletteColors = new StringBuilder();
             foreach (dynamic rec in wrapChildren)
@@ -251,20 +251,20 @@ namespace ColorHM
             SQLiteConnection conn = Connect();
             SQLiteCommand sqlite_cmd = conn.CreateCommand();
             SQLiteCommand sqlite_cmdB = conn.CreateCommand();
-    
-            
+
+
             // If there is no tag in the tabitem.
             // Since when a new palette is created, the palette is not yet assigned a tag, give it a tag.
             // The tag holds the database ID of the palette.
             if (selectedTab.Parent.Tag == null)
             {
-               
+
                 sqlite_cmd.CommandText = $"INSERT INTO palettes (palette_name, colors) VALUES ('{selectedTabHeaderText}', '{paletteColors.ToString()}') ";
                 sqlite_cmd.ExecuteNonQuery();
-        
+
                 sqlite_cmdB.CommandText = "SELECT last_insert_rowid()";
                 dynamic dyn = sqlite_cmdB.ExecuteScalar();
-        
+
                 selectedTab.Parent.Tag = dyn.ToString();
 
             }
@@ -275,7 +275,7 @@ namespace ColorHM
                 sqlite_cmd.CommandText = $"UPDATE palettes SET palette_name = '{selectedTabHeaderText}', colors = '{paletteColors.ToString()}' WHERE id = {selectedTab.Parent.Tag}";
                 sqlite_cmd.ExecuteNonQuery();
             }
-           
+
             conn.Close();
 
         }
@@ -287,64 +287,83 @@ namespace ColorHM
 
         private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int cH = (int)hueSlider.Value; //hueTextBox.Text = cH.ToString();
-            double cS = (double)saturationSlider.Value; //saturationTextBox.Text = cS.ToString();
-            //double cL = lightnesSlider.Value; //lightnessTextBox.Text = cL.ToString();
+            if (hueSlider.IsFocused == true || saturationSlider.IsFocused == true || lightnesSlider.IsFocused == true)
+            {
+                int h = (int)hueSlider.Value; hueTextBox.Text = h.ToString();
+                double s = (double)saturationSlider.Value; saturationTextBox.Text = s.ToString();
+                double l = lightnesSlider.Value; lightnessTextBox.Text = l.ToString();
+                HlsToRgb((double)h, l, s, out int r, out int g, out int b);
+                redSlider.Value = r; redTextBox.Text = r.ToString();
+                greenSlider.Value = g; greenTextBox.Text = g.ToString();
+                blueSlider.Value = b; blueTextBox.Text = b.ToString();
+                int a = (int)alphaSlider.Value;
+                Color argbColor = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
+                var x = new SolidColorBrush(argbColor);
+                TopRectangle.Fill = x;
+            }
+
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int cR = (int)redSlider.Value;      redTextBox.Text = cR.ToString();
-            int cG = (int)greenSlider.Value;    greenTextBox.Text = cG.ToString();
-            int cB = (int)blueSlider.Value;     blueTextBox.Text = cB.ToString();
-            int cA = (int)alphaSlider.Value;    alphaTextBox.Text = cA.ToString();
+            if (redSlider.IsFocused == true || greenSlider.IsFocused == true || blueSlider.IsFocused == true || alphaSlider.IsFocused == true)
+            {
+                int cR = (int)redSlider.Value; redTextBox.Text = cR.ToString();
+                int cG = (int)greenSlider.Value; greenTextBox.Text = cG.ToString();
+                int cB = (int)blueSlider.Value; blueTextBox.Text = cB.ToString();
+                int cA = (int)alphaSlider.Value; alphaTextBox.Text = cA.ToString();
 
-            //RgbToHls(cR, cG, cB, out double h, out double l, out double s);
-            //hueTextBox.Text = h.ToString(); hueSlider.Value = h;
-            //saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
-            //lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
-
-            Brush x = TopRectangle.Fill;
-
-            Brush r = redSlider.Foreground;
-            string hexValueR = cR.ToString("X2");
-            Color rC = (Color)ColorConverter.ConvertFromString(r.ToString());
-            var rHex = "#" + hexValueR + rC.R.ToString("X2") + rC.G.ToString("X2") + rC.B.ToString("X2");
-            Color rColor = (Color)ColorConverter.ConvertFromString(rHex);
-            //redSlider.Background = new SolidColorBrush(rColor);
-            redSlider.Foreground = new SolidColorBrush(rColor);
-         
-
-            Brush g = greenSlider.Foreground;
-            string hexValueG = cG.ToString("X2");
-            Color gC = (Color)ColorConverter.ConvertFromString(g.ToString());
-            var gHex = "#" + hexValueG + gC.R.ToString("X2") + gC.G.ToString("X2") + gC.B.ToString("X2");
-            Color gColor = (Color)ColorConverter.ConvertFromString(gHex);
-            greenSlider.Foreground = new SolidColorBrush(gColor);
-
-            Brush b = blueSlider.Foreground;
-            string hexValueB = cB.ToString("X2");
-            Color bC = (Color)ColorConverter.ConvertFromString(b.ToString());
-            var bHex = "#" + hexValueB + bC.R.ToString("X2") + bC.G.ToString("X2") + bC.B.ToString("X2");
-            Color bColor = (Color)ColorConverter.ConvertFromString(bHex);
-            blueSlider.Foreground = new SolidColorBrush(bColor);
-
-            Brush a = alphaSlider.Foreground;
-            string hexValueA = cA.ToString("X2");
-            Color aC = (Color)ColorConverter.ConvertFromString(a.ToString());
-            var aHex = "#" + hexValueA + aC.R.ToString("X2") + aC.G.ToString("X2") + aC.B.ToString("X2");
-            Color aColor = (Color)ColorConverter.ConvertFromString(aHex);
-            alphaSlider.Foreground = new SolidColorBrush(aColor);
+                if (hueSlider.IsFocused == false || saturationSlider.IsFocused == false || lightnesSlider.IsFocused == false)
+                {
+                    RgbToHls(cR, cG, cB, out double h, out double l, out double s);
+                    hueTextBox.Text = h.ToString(); hueSlider.Value = h;
+                    saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
+                    lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
+                }
 
 
-            Color c = (Color)ColorConverter.ConvertFromString(x.ToString());
-            //var cHex = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-            Color argbColor = Color.FromArgb((byte)cA, (byte)cR, (byte)cG, (byte)cB);
-            x = new SolidColorBrush(argbColor);
-            TopRectangle.Fill = x;
-            hexTextBox.Text = x.ToString();
-            //var cRgb = "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
-            //MessageBox.Show(cRgb);
+                Brush x = TopRectangle.Fill;
+
+                Brush r = redSlider.Foreground;
+                string hexValueR = cR.ToString("X2");
+                Color rC = (Color)ColorConverter.ConvertFromString(r.ToString());
+                var rHex = "#" + hexValueR + rC.R.ToString("X2") + rC.G.ToString("X2") + rC.B.ToString("X2");
+                Color rColor = (Color)ColorConverter.ConvertFromString(rHex);
+                //redSlider.Background = new SolidColorBrush(rColor);
+                redSlider.Foreground = new SolidColorBrush(rColor);
+
+
+                Brush g = greenSlider.Foreground;
+                string hexValueG = cG.ToString("X2");
+                Color gC = (Color)ColorConverter.ConvertFromString(g.ToString());
+                var gHex = "#" + hexValueG + gC.R.ToString("X2") + gC.G.ToString("X2") + gC.B.ToString("X2");
+                Color gColor = (Color)ColorConverter.ConvertFromString(gHex);
+                greenSlider.Foreground = new SolidColorBrush(gColor);
+
+                Brush b = blueSlider.Foreground;
+                string hexValueB = cB.ToString("X2");
+                Color bC = (Color)ColorConverter.ConvertFromString(b.ToString());
+                var bHex = "#" + hexValueB + bC.R.ToString("X2") + bC.G.ToString("X2") + bC.B.ToString("X2");
+                Color bColor = (Color)ColorConverter.ConvertFromString(bHex);
+                blueSlider.Foreground = new SolidColorBrush(bColor);
+
+                Brush a = alphaSlider.Foreground;
+                string hexValueA = cA.ToString("X2");
+                Color aC = (Color)ColorConverter.ConvertFromString(a.ToString());
+                var aHex = "#" + hexValueA + aC.R.ToString("X2") + aC.G.ToString("X2") + aC.B.ToString("X2");
+                Color aColor = (Color)ColorConverter.ConvertFromString(aHex);
+                alphaSlider.Foreground = new SolidColorBrush(aColor);
+
+
+                Color c = (Color)ColorConverter.ConvertFromString(x.ToString());
+                //var cHex = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+                Color argbColor = Color.FromArgb((byte)cA, (byte)cR, (byte)cG, (byte)cB);
+                x = new SolidColorBrush(argbColor);
+                TopRectangle.Fill = x;
+                hexTextBox.Text = x.ToString();
+                //var cRgb = "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
+                //MessageBox.Show(cRgb);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
