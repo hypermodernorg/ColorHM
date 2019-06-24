@@ -68,6 +68,7 @@ namespace ColorHM
             hueTextBox.Text = h.ToString(); hueSlider.Value = h;
             saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
             lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
+            TopRectangle.Fill = brush;
 
         }
 
