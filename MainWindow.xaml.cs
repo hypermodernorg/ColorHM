@@ -40,8 +40,6 @@ namespace ColorHM
             c.B = 129;
 
             RectangleChange(c);
-
-
         }
 
         public void CleanScreenshots()
@@ -138,10 +136,10 @@ namespace ColorHM
 
             tabItem.Header = newPaletteTextBox;
             ContextMenu contextMenu = new ContextMenu();
-            MenuItem menuItem = new MenuItem();
-            contextMenu.Items.Add(menuItem);
-            menuItem.Header = "Save Palette";
-            menuItem.Click += new RoutedEventHandler(SavePalette);
+            MenuItem savePaletteMenuItem = new MenuItem();
+            contextMenu.Items.Add(savePaletteMenuItem);
+            savePaletteMenuItem.Header = "Save Palette";
+            savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
             tabItem.ContextMenu = contextMenu;
             tabItem.Content = wcp;
             NewPalette();
@@ -175,10 +173,14 @@ namespace ColorHM
                 var ti = new TabItem();
                 var wcp = new WrapPanel();
                 ContextMenu contextMenu = new ContextMenu();
-                MenuItem menuItem = new MenuItem();
-                contextMenu.Items.Add(menuItem);
-                menuItem.Header = "Save Palette";
-                menuItem.Click += new RoutedEventHandler(SavePalette);
+                MenuItem savePaletteMenuItem = new MenuItem();
+                MenuItem deletePaletteMenuItem = new MenuItem();
+                contextMenu.Items.Add(savePaletteMenuItem);
+                contextMenu.Items.Add(deletePaletteMenuItem);
+                savePaletteMenuItem.Header = "Save Palette";
+                savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
+                deletePaletteMenuItem.Header = "Delete Palette";
+                deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
                 //ti.Content = wcp;
 
                 Thickness thickness = new Thickness
@@ -215,6 +217,7 @@ namespace ColorHM
                         Brush newBrush = new SolidColorBrush(newColor);
                         var rec = new ColorHM.Properties.UserControl1();
                         rec.rectangleUC.Fill = newBrush;
+                        rec.ToolTip = newColor.ToString();
                         //rec.MouseDown += new RoutedEventArgs(RecMouseDown);
                         wcp.Children.Add(rec);
                     }
@@ -231,7 +234,10 @@ namespace ColorHM
             NewPalette();
         }
 
+        public void DeletePalette(object sender, RoutedEventArgs e)
+        {
 
+        }
         public void SavePalette(object sender, RoutedEventArgs e)
         {
 
