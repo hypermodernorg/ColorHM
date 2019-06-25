@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 using System.Data;
 using System.Data.SQLite;
 
@@ -144,10 +143,35 @@ namespace ColorHM
             tabItem.Content = wcp;
             NewPalette();
         }
+        public void DeleteColor(object sender, RoutedEventArgs e)
+        {
+            MenuItem x = sender as MenuItem;
+            ContextMenu y = x.Parent as ContextMenu;
+            Rectangle rec = y.PlacementTarget as Rectangle;
+            Grid grid = rec.Parent as Grid;
+            UserControl uc = grid.Parent as UserControl;
+            WrapPanel wp = uc.Parent as WrapPanel;
+            TabItem tab = wp.Parent as TabItem;
+            string id = tab.Tag.ToString();
+            
+            //Todo Connect to db and delete the color
 
+            MessageBox.Show(id.ToString());
+        }
 
+        public ContextMenu RecContextMenu()
+        {
+            ContextMenu recContextMenu = new ContextMenu();
+            MenuItem deleteRec = new MenuItem();
+            deleteRec.Header = "Delete Color";
+            deleteRec.Click += new RoutedEventHandler(DeleteColor);
+           
+            recContextMenu.Items.Add(deleteRec);
 
-        // Get all palettes, create new if none exist.
+            return recContextMenu;
+        }
+
+        //! Get all palettes, create new if none exist.
         public void GetPalettes()
         {
             SQLiteConnection conn = Connect();
@@ -157,7 +181,7 @@ namespace ColorHM
             DataTable palettesDT = new DataTable();
             dt.Fill(palettesDT);
 
-            // If there are no palettes, create one and rerun the query.
+            //! If there are no palettes, create one and rerun the query.
             if (palettesDT.Rows.Count == 0)
             {
                 sqlite_cmd.CommandText = "INSERT INTO palettes (palette_name) VALUES ('Palette 1')";
@@ -181,7 +205,7 @@ namespace ColorHM
                 savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
                 deletePaletteMenuItem.Header = "Delete Palette";
                 deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
-                //ti.Content = wcp;
+          
 
                 Thickness thickness = new Thickness
                 {
@@ -198,26 +222,28 @@ namespace ColorHM
                     Text = row["palette_name"].ToString(),
 
                 };
-
+                string paletteID = row["id"].ToString();
                 string colors = row["colors"].ToString();
                 List<string> colorList = colors.Split(null).ToList();
 
-                // Create a rectangle for each color per palette
+                //! Create a rectangle for each color per palette
                 foreach (string color in colorList)
                 {
 
-                    // make sure color is in fact a color before processing 
-                    // because whitespace may exist at the end of the color string in the db
+                    //! make sure color is in fact a color before processing 
+                    //! because whitespace may exist at the end of the color string in the db
                     if (color.Contains('#'))
                     {
-                        //MessageBox.Show(color);
+                        
                         Color newColor = (Color)ColorConverter.ConvertFromString(color);
-
+                        ContextMenu recContextMenu = RecContextMenu();
 
                         Brush newBrush = new SolidColorBrush(newColor);
                         var rec = new ColorHM.Properties.UserControl1();
                         rec.rectangleUC.Fill = newBrush;
                         rec.ToolTip = newColor.ToString();
+                        rec.rectangleUC.ContextMenu = recContextMenu;
+                     
                         //rec.MouseDown += new RoutedEventArgs(RecMouseDown);
                         wcp.Children.Add(rec);
                     }
@@ -234,8 +260,19 @@ namespace ColorHM
             NewPalette();
         }
 
+        // Delete palette.
         public void DeletePalette(object sender, RoutedEventArgs e)
         {
+            TabItem tab = TabControl1.SelectedItem as TabItem;
+            
+            MessageBox.Show(tab.Tag.ToString());
+            SQLiteConnection conn = Connect();
+            SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            sqlite_cmd.CommandText = $"DELETE FROM palettes WHERE id={tab.Tag}";
+            sqlite_cmd.ExecuteNonQuery();
+            conn.Close();
+            TabControl1.Items.Clear();
+            GetPalettes();
 
         }
         public void SavePalette(object sender, RoutedEventArgs e)
@@ -245,6 +282,17 @@ namespace ColorHM
             dynamic selectedTabHeader = TabControl1.SelectedItem;
             string selectedTabHeaderText = selectedTabHeader.Header.Text.ToString();
 
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem savePaletteMenuItem = new MenuItem();
+            MenuItem deletePaletteMenuItem = new MenuItem();
+            contextMenu.Items.Add(savePaletteMenuItem);
+            contextMenu.Items.Add(deletePaletteMenuItem);
+            savePaletteMenuItem.Header = "Save Palette";
+            savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
+            deletePaletteMenuItem.Header = "Delete Palette";
+            deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
+
+            selectedTabHeader.ContextMenu = contextMenu;
 
             dynamic wrapChildren = selectedTab.Children;
             StringBuilder paletteColors = new StringBuilder();
@@ -260,9 +308,9 @@ namespace ColorHM
             SQLiteCommand sqlite_cmdB = conn.CreateCommand();
 
 
-            // If there is no tag in the tabitem.
-            // Since when a new palette is created, the palette is not yet assigned a tag, give it a tag.
-            // The tag holds the database ID of the palette.
+            //! If there is no tag in the tabitem.
+            //! Since when a new palette is created, the palette is not yet assigned a tag, give it a tag.
+            //! The tag holds the database ID of the palette.
             if (selectedTab.Parent.Tag == null)
             {
 
@@ -379,15 +427,13 @@ namespace ColorHM
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            
             EyeDrop ss = new EyeDrop();
             ss.TakeScreenShot();
-
-
         }
 
         private void AddToPalette_Click(object sender, RoutedEventArgs e)
         {
+            
             var FirstWrapPanelInTabControl = FindVisualChildren<WrapPanel>(TabControl1).FirstOrDefault();
             Brush newBrush = TopRectangle.Fill;
             //var newColor = dialog.Color;
@@ -395,11 +441,13 @@ namespace ColorHM
             var x = new ColorHM.Properties.UserControl1(); //new instance of rectangle user control.
             x.rectangleUC.Fill = newBrush;
             x.ToolTip = newBrush.ToString();
+            
+            ContextMenu recContextMenu = RecContextMenu();
+            x.ContextMenu = recContextMenu;
             FirstWrapPanelInTabControl.Children.Add(x); // Add the rectangle to the selected TabItem.
         }
 
-
-        // Convert an RGB value into an HLS value.
+        //! Convert an RGB value into an HLS value.
         public static void RgbToHls(int r, int g, int b,
             out double h, out double l, out double s)
         {
@@ -441,7 +489,7 @@ namespace ColorHM
                 if (h < 0) h += 360;
             }
         }
-        // Convert an HLS value into an RGB value.
+        //! Convert an HLS value into an RGB value.
         public static void HlsToRgb(double h, double l, double s,
             out int r, out int g, out int b)
         {
