@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Data.SQLite;
 
-
-
-
 namespace ColorHM
 {
     /// <summary>
@@ -29,6 +26,7 @@ namespace ColorHM
     {
         public MainWindow()
         {
+            //Todo For some reason the TopRectangle isnt initializing with a color. Fix it.
             InitializeComponent();
             CleanScreenshots();
             alphaSlider.Value = 255;
@@ -55,9 +53,7 @@ namespace ColorHM
         //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         public void RectangleChange(Color color)
         {
-
             Brush brush = new SolidColorBrush(color);
-            //TopRectangle.Fill = brush;
             redSlider.Value = (int)color.R; redTextBox.Text = color.R.ToString();
             greenSlider.Value = (int)color.G; greenTextBox.Text = color.G.ToString();
             blueSlider.Value = (int)color.B; blueTextBox.Text = color.B.ToString();
@@ -66,7 +62,6 @@ namespace ColorHM
             saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
             lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
             TopRectangle.Fill = brush;
-
         }
 
 
@@ -95,7 +90,6 @@ namespace ColorHM
             conn = new SQLiteConnection("Data Source=" + dbDirectory + "; Version=3;New=True;Compress=True;");
             conn.Open();
             return conn;
-
         }
 
         // The tab with "+" in the header to create a new palette.
@@ -145,18 +139,58 @@ namespace ColorHM
         }
         public void DeleteColor(object sender, RoutedEventArgs e)
         {
+            // Get the color, and the palette db row id.
             MenuItem x = sender as MenuItem;
             ContextMenu y = x.Parent as ContextMenu;
-            Rectangle rec = y.PlacementTarget as Rectangle;
+            Rectangle rec = y.PlacementTarget as Rectangle; //! PlacementTarget gets the container where the context menu was clicked.
             Grid grid = rec.Parent as Grid;
             UserControl uc = grid.Parent as UserControl;
             WrapPanel wp = uc.Parent as WrapPanel;
             TabItem tab = wp.Parent as TabItem;
-            string id = tab.Tag.ToString();
-            
-            //Todo Connect to db and delete the color
+            string id = tab.Tag.ToString(); //! All of the above to get the id of the palette db row.
+            SolidColorBrush brush = rec.Fill as SolidColorBrush;
+            Color color = brush.Color;
 
-            MessageBox.Show(id.ToString());
+            // Connect to db
+            SQLiteConnection conn = Connect();
+            SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            sqlite_cmd.CommandText = $"SELECT id, colors from palettes where id = '{id}'";
+            SQLiteDataAdapter dt = new SQLiteDataAdapter(sqlite_cmd);
+            DataTable palettesDT = new DataTable();
+            dt.Fill(palettesDT);
+            palettesDT = new DataTable();
+            dt.Fill(palettesDT);
+
+            StringBuilder paletteColors = new StringBuilder();
+            foreach (DataRow row in palettesDT.Rows)
+            {
+                string colorsString = row[1].ToString();
+                //MessageBox.Show(colorsString.ToString());
+                List<string> colorsList = new List<string>();
+                colorsList = colorsString.Split(null).ToList();
+                int i = 0;
+                int iremove = -1;
+                foreach (string individualColorString in colorsList)
+                {
+                    if (individualColorString.Trim() == color.ToString())
+                    {
+                        iremove = i;
+                    }
+                    i++;
+                }
+                colorsList.RemoveAt(iremove);
+                
+                foreach (string paletteColor in colorsList)
+                {
+               
+                    paletteColors.Append(paletteColor + " ");
+                }  
+                    
+            }
+            sqlite_cmd.CommandText = $"UPDATE palettes SET colors = '{paletteColors.ToString()}' WHERE id = {id}";
+            sqlite_cmd.ExecuteNonQuery();
+            conn.Close();
+            grid.Children.Remove(rec);
         }
 
         public ContextMenu RecContextMenu()
@@ -165,7 +199,7 @@ namespace ColorHM
             MenuItem deleteRec = new MenuItem();
             deleteRec.Header = "Delete Color";
             deleteRec.Click += new RoutedEventHandler(DeleteColor);
-           
+
             recContextMenu.Items.Add(deleteRec);
 
             return recContextMenu;
@@ -205,7 +239,7 @@ namespace ColorHM
                 savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
                 deletePaletteMenuItem.Header = "Delete Palette";
                 deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
-          
+
 
                 Thickness thickness = new Thickness
                 {
@@ -234,20 +268,11 @@ namespace ColorHM
                     //! because whitespace may exist at the end of the color string in the db
                     if (color.Contains('#'))
                     {
-                        
                         Color newColor = (Color)ColorConverter.ConvertFromString(color);
-                        ContextMenu recContextMenu = RecContextMenu();
-
                         Brush newBrush = new SolidColorBrush(newColor);
-                        var rec = new ColorHM.Properties.UserControl1();
-                        rec.rectangleUC.Fill = newBrush;
-                        rec.ToolTip = newColor.ToString();
-                        rec.rectangleUC.ContextMenu = recContextMenu;
-                     
-                        //rec.MouseDown += new RoutedEventArgs(RecMouseDown);
+                        ColorHM.Properties.UserControl1 rec = CreateRectangle(newBrush);
                         wcp.Children.Add(rec);
                     }
-
                 }
                 ti.Content = wcp;
                 // MessageBox.Show(colors);
@@ -264,7 +289,7 @@ namespace ColorHM
         public void DeletePalette(object sender, RoutedEventArgs e)
         {
             TabItem tab = TabControl1.SelectedItem as TabItem;
-            
+
             MessageBox.Show(tab.Tag.ToString());
             SQLiteConnection conn = Connect();
             SQLiteCommand sqlite_cmd = conn.CreateCommand();
@@ -431,20 +456,29 @@ namespace ColorHM
             ss.TakeScreenShot();
         }
 
+        //! Maybe move to class later.
+        public ColorHM.Properties.UserControl1 CreateRectangle(Brush newBrush)
+        {
+            ContextMenu recContextMenu = RecContextMenu();
+            var rec = new ColorHM.Properties.UserControl1();
+            rec.rectangleUC.Fill = newBrush;
+            rec.ToolTip = newBrush.ToString();
+            rec.rectangleUC.ContextMenu = recContextMenu;
+            return rec;
+        }
+
+
         private void AddToPalette_Click(object sender, RoutedEventArgs e)
         {
             
             var FirstWrapPanelInTabControl = FindVisualChildren<WrapPanel>(TabControl1).FirstOrDefault();
             Brush newBrush = TopRectangle.Fill;
-            //var newColor = dialog.Color;
-            //Brush newBrush = new SolidColorBrush(newColor);
-            var x = new ColorHM.Properties.UserControl1(); //new instance of rectangle user control.
-            x.rectangleUC.Fill = newBrush;
-            x.ToolTip = newBrush.ToString();
-            
-            ContextMenu recContextMenu = RecContextMenu();
-            x.ContextMenu = recContextMenu;
-            FirstWrapPanelInTabControl.Children.Add(x); // Add the rectangle to the selected TabItem.
+
+            ColorHM.Properties.UserControl1 rec = CreateRectangle(newBrush); 
+
+            FirstWrapPanelInTabControl.Children.Add(rec); 
+            TabControl1.Items.Refresh();
+
         }
 
         //! Convert an RGB value into an HLS value.
