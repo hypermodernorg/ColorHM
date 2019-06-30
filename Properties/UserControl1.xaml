@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="65" d:DesignWidth="65">
     <Grid>
-        <Rectangle x:Name="rectangleUC" MouseDown="RectangleUC_MouseDown" StrokeThickness="2px" Stroke="Black" MinWidth="65" MinHeight="65" Margin="0,0,5,5" />
+        <Rectangle x:Name="rectangleUC" MouseEnter="RectangleUC_MouseEnter"  MouseLeave="RectangleUC_MouseLeave" MouseDown="RectangleUC_MouseDown"  Stroke="Black" MinWidth="65" MinHeight="65" Margin="0,0,5,5" />
     </Grid>
 </UserControl>

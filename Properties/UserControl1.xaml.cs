@@ -38,11 +38,49 @@ namespace ColorHM.Properties
                 x.greenSlider.Value = c.G; x.greenTextBox.Text = c.G.ToString();
                 x.blueSlider.Value = c.B; x.blueTextBox.Text = c.B.ToString(); 
                 x.alphaSlider.Value = c.A; x.alphaTextBox.Text = c.A.ToString();
+                x.hexTextBox.Text = color.ToString();
 
             }
 
             
         }
+
+        private void RectangleUC_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SolidColorBrush brush = new SolidColorBrush();
+
+
+            Color color = new Color
+            {
+                R = 255,
+                G = 255,
+                B = 255, 
+                A = 255
+            };
+            brush.Color = color;
+            rectangleUC.StrokeThickness = 4;
+            rectangleUC.Stroke = brush;
+        }
+
+        private void RectangleUC_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SolidColorBrush brush = new SolidColorBrush();
+
+
+            Color color = new Color
+            {
+                R = 0,
+                G = 0,
+                B = 0,
+                A = 255
+            };
+            brush.Color = color;
+            rectangleUC.StrokeThickness = 2;
+            rectangleUC.Stroke = brush;
+     
+        }
+
+
     }
 
 }

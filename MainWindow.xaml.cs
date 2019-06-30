@@ -29,14 +29,16 @@ namespace ColorHM
             //Todo For some reason the TopRectangle isnt initializing with a color. Fix it.
             InitializeComponent();
             CleanScreenshots();
-            alphaSlider.Value = 255;
+       
             GetPalettes();
             Color c = new Color();
             c.R = 82;
-            c.G = 254;
-            c.B = 129;
+            c.G = 212;
+            c.B = 192;
+            c.A = 255;
 
             RectangleChange(c);
+           
         }
 
         public void CleanScreenshots()
@@ -57,11 +59,13 @@ namespace ColorHM
             redSlider.Value = (int)color.R; redTextBox.Text = color.R.ToString();
             greenSlider.Value = (int)color.G; greenTextBox.Text = color.G.ToString();
             blueSlider.Value = (int)color.B; blueTextBox.Text = color.B.ToString();
+            alphaSlider.Value = (int)color.A; alphaTextBox.Text = color.A.ToString();
             RgbToHls((int)color.R, (int)color.G, (int)color.B, out double h, out double l, out double s);
             hueTextBox.Text = h.ToString(); hueSlider.Value = h;
             saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
             lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
             TopRectangle.Fill = brush;
+            hexTextBox.Text = brush.ToString();
         }
 
 
@@ -473,11 +477,39 @@ namespace ColorHM
             
             var FirstWrapPanelInTabControl = FindVisualChildren<WrapPanel>(TabControl1).FirstOrDefault();
             Brush newBrush = TopRectangle.Fill;
-
             ColorHM.Properties.UserControl1 rec = CreateRectangle(newBrush); 
+            FirstWrapPanelInTabControl.Children.Add(rec);
+            // new code
 
-            FirstWrapPanelInTabControl.Children.Add(rec); 
-            TabControl1.Items.Refresh();
+            //Grid grid = FirstWrapPanelInTabControl.Parent as Grid;
+            TabItem tabitem = FirstWrapPanelInTabControl.Parent as TabItem;
+            string id = tabitem.Tag.ToString();
+
+            SQLiteConnection conn = Connect();
+            SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            sqlite_cmd.CommandText = $"SELECT id, colors from palettes where id = '{id}'";
+            SQLiteDataAdapter dt = new SQLiteDataAdapter(sqlite_cmd);
+            DataTable palettesDT = new DataTable();
+            dt.Fill(palettesDT);
+            palettesDT = new DataTable();
+            dt.Fill(palettesDT);
+
+            StringBuilder paletteColors = new StringBuilder();
+            foreach (DataRow row in palettesDT.Rows)
+            {
+               string existingColorsString = row[1].ToString();
+
+
+
+
+                paletteColors.Append(existingColorsString + " ");
+                paletteColors.Append(newBrush.ToString() + " ");
+             
+
+            }
+            sqlite_cmd.CommandText = $"UPDATE palettes SET colors = '{paletteColors.ToString()}' WHERE id = {id}";
+            sqlite_cmd.ExecuteNonQuery();
+            conn.Close();
 
         }
 
