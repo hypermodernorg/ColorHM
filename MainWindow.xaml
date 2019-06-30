@@ -31,6 +31,11 @@
 
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Image Grid.Column="4" Source="Properties/hue.png" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Height="12" MinHeight="10">
+            <Image.OpacityMask>
+                <ImageBrush ImageSource="Properties/hue.png"/>
+            </Image.OpacityMask>
+        </Image>
         <TabControl x:Name="TabControl1" Grid.Row="6" Margin="0,36.4,-0.4,-0.2" Background="Black" Controls:TabControlHelper.UnderlineSelectedBrush="#CCFFFFFF" Controls:TabControlHelper.UnderlineMouseOverSelectedBrush="White" Controls:TabControlHelper.UnderlineMouseOverBrush="White" Controls:TabControlHelper.Underlined="SelectedTabItem" Grid.ColumnSpan="7" Grid.RowSpan="2"/>
         <Slider x:Name="alphaSlider" ToolTip="Slide to add or remove transparency." Style="{DynamicResource FlatSlider}" Margin="0.4,6.6,1,7" Background="#3FFFFF00"  Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Height="12" Grid.Row="4" VerticalAlignment="Center" Foreground="#3FFFFF00" Grid.Column="1"/>
         <Slider x:Name="redSlider" ToolTip="Slide to add red." Style="{DynamicResource FlatSlider}" Background="#FF320000"   Maximum="255" Minimum="0" ValueChanged="Slider_ValueChanged" Height="12" Grid.Row="1" Margin="0" Controls:SliderHelper.ThumbFillHoverBrush="#FF838181" Foreground="Red" VerticalAlignment="Center" Grid.Column="1"/>
@@ -59,7 +64,7 @@
         <Button x:Name="AddToPalette" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Content="{iconPacks:Material plus}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Click="AddToPalette_Click" Grid.Column="1" Height="27" Grid.Row="6" Background="{x:Null}" BorderBrush="{x:Null}" Margin="32.4,0.4,0,0" ToolTip="Add the color to the current palette."/>
         <Slider x:Name="saturationSlider" ValueChanged="HSL_Slider_ValueChanged" Minimum="0" Maximum="1" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,6.8,0.4,6.8" Background="#3FFFFFFF" Grid.Column="4" Height="12" Grid.Row="2" VerticalAlignment="Center" Foreground="#3FFFFFFF" BorderBrush="White" TickFrequency="0.01"/>
         <Slider x:Name="lightnesSlider" ValueChanged="HSL_Slider_ValueChanged" Minimum="0" Maximum="1" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,7.2,0.4,6.4"  Background="#3FFFFFFF" Grid.Column="4" Height="12" Grid.Row="3" VerticalAlignment="Center" Foreground="#3FFFFFFF" BorderBrush="White" HorizontalContentAlignment="Left" TickFrequency="0.01"/>
-        <Slider x:Name="hueSlider" ValueChanged="HSL_Slider_ValueChanged" Minimum="0" Maximum="360" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0" Grid.Column="4" Height="12" Grid.Row="1" VerticalAlignment="Center" BorderBrush="White"/>
+        <Slider x:Name="hueSlider" ValueChanged="HSL_Slider_ValueChanged" Minimum="0" Maximum="360" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0" Grid.Column="4" Height="12" Grid.Row="1" VerticalAlignment="Center" BorderBrush="White" Background="{x:Null}" Foreground="{x:Null}"/>
         <TextBox x:Name="hueTextBox" Margin="0.6,3.6,0.4,22.8" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="5" Grid.Row="1" Grid.RowSpan="2"/>
         <TextBox x:Name="lightnessTextBox" Margin="0.6,0.2,0.4,25" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="5" Grid.Row="3" Grid.RowSpan="2"/>
         <TextBox x:Name="saturationTextBox" Margin="0.6,26.6,0.4,25.4" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" TextAlignment="Center" Controls:TextBoxHelper.WatermarkAlignment="Center" Grid.Column="5" Grid.Row="1" Grid.RowSpan="3"/>
