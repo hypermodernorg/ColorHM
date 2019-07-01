@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ColorHM.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="65" d:DesignWidth="65">
+             d:DesignHeight="63.5" d:DesignWidth="63.5">
     <Grid>
-        <Rectangle x:Name="rectangleUC" MouseEnter="RectangleUC_MouseEnter"  MouseLeave="RectangleUC_MouseLeave" MouseDown="RectangleUC_MouseDown"  Stroke="Black" MinWidth="65" MinHeight="65" Margin="0,0,5,5" />
+        <Rectangle x:Name="rectangleUC" MouseEnter="RectangleUC_MouseEnter"  MouseLeave="RectangleUC_MouseLeave" MouseDown="RectangleUC_MouseDown"  Stroke="Black" MinWidth="63.5" MinHeight="63.5" Margin="0,0,4,4" Width="63.5" Height="63.5" />
     </Grid>
 </UserControl>

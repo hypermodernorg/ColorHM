@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ColorHM.Properties"
              mc:Ignorable="d">
 
-    <TabItem x:Name="tih">
+    <TabItem x:Name="tih" Padding="0">
         <TabItem.Header>
             <TextBox x:Name="htb"></TextBox>
         </TabItem.Header>

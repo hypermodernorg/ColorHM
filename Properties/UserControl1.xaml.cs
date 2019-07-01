@@ -30,9 +30,9 @@ namespace ColorHM.Properties
                 Color c = (Color)ColorConverter.ConvertFromString(fill.ToString());
                 //var cHex = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
                 //var cRgb = "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
+                
 
-
-
+                //Todo Add hsl support.
                 x.TopRectangle.Fill = fill;
                 x.redSlider.Value = c.R; x.redTextBox.Text = c.R.ToString();
                 x.greenSlider.Value = c.G; x.greenTextBox.Text = c.G.ToString();
@@ -75,7 +75,7 @@ namespace ColorHM.Properties
                 A = 255
             };
             brush.Color = color;
-            rectangleUC.StrokeThickness = 2;
+            rectangleUC.StrokeThickness = 1;
             rectangleUC.Stroke = brush;
      
         }

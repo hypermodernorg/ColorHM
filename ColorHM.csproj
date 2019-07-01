@@ -108,9 +108,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EyeDrop.cs" />
-    <Compile Include="ColorPicker.xaml.cs">
-      <DependentUpon>ColorPicker.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AddNewTabItem.xaml.cs">
       <DependentUpon>AddNewTabItem.xaml</DependentUpon>
     </Compile>
@@ -123,10 +120,6 @@
     <Compile Include="Screenshot.xaml.cs">
       <DependentUpon>Screenshot.xaml</DependentUpon>
     </Compile>
-    <Page Include="ColorPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -188,7 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Properties\hue.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CustomToolNamespace>hue</CustomToolNamespace>
     </Resource>
   </ItemGroup>
