@@ -8,7 +8,16 @@
         xmlns:local="clr-namespace:ColorHM"
         xmlns:Properties="clr-namespace:ColorHM.Properties" x:Name="ColorHM" x:Class="ColorHM.MainWindow"
         mc:Ignorable="d"
-        Title="ColorHM" Height="486.667" Width="565" MaxWidth="565" MinWidth="565" WindowTitleBrush="Black" Background="{x:Null}" TitleCaps="False" EnableDWMDropShadow="True">
+        Title="ColorHM" Height="486.667" Width="565" MaxWidth="565" MinWidth="565" WindowTitleBrush="Black" Background="{x:Null}" EnableDWMDropShadow="True" TitleAlignment="Left" TitleCaps="False">
+    <Controls:MetroWindow.TitleForeground>
+        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" SpreadMethod="Reflect">
+            <GradientStop Color="#FFE80000" Offset="0"/>
+            <GradientStop Color="#FF3EB444" Offset="1"/>
+            <GradientStop Color="#FF0079FD" Offset="0.219"/>
+            <GradientStop Color="#FF9000FF" Offset="0.487"/>
+            <GradientStop Color="#FFC4C4C4" Offset="0.773"/>
+        </LinearGradientBrush>
+    </Controls:MetroWindow.TitleForeground>
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225"/>
