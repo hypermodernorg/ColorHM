@@ -371,23 +371,44 @@ namespace ColorHM
 
         private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+
+            int h = (int)hueSlider.Value;
+            double s = (double)saturationSlider.Value;
+            double l = lightnesSlider.Value;
+            int a = (int)alphaSlider.Value;
+            Color argbColor = new Color();
             //! Prevent the recursion error between rgba sliders and hsl sliders
             if (hueSlider.IsFocused == true || saturationSlider.IsFocused == true || lightnesSlider.IsFocused == true)
             {
-                int h = (int)hueSlider.Value; hueTextBox.Text = h.ToString();
-                double s = (double)saturationSlider.Value; saturationTextBox.Text = s.ToString();
-                double l = lightnesSlider.Value; lightnessTextBox.Text = l.ToString();
+                hueTextBox.Text = h.ToString();
+                 saturationTextBox.Text = s.ToString();
+                lightnessTextBox.Text = l.ToString();
                 HlsToRgb((double)h, l, s, out int r, out int g, out int b);
                 redSlider.Value = r; redTextBox.Text = r.ToString();
                 greenSlider.Value = g; greenTextBox.Text = g.ToString();
                 blueSlider.Value = b; blueTextBox.Text = b.ToString();
-                int a = (int)alphaSlider.Value;
-                Color argbColor = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
+                
+                argbColor = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
                 var x = new SolidColorBrush(argbColor);
                 TopRectangle.Fill = x;
                 hexTextBox.Text = x.ToString();
+ 
             }
+            s = 1;
+            HlsToRgb((double)h, l, s, out int rb, out int gb, out int bb);
+            argbColor = Color.FromArgb((byte)a, (byte)rb, (byte)gb, (byte)bb);
+            SaturationRectangleGradientstop.GradientStops[1].Color = argbColor;
 
+            s = 0;
+            HlsToRgb((double)h, l, s, out int rc, out int gc, out int bc);
+            argbColor = Color.FromArgb((byte)a, (byte)rc, (byte)gc, (byte)bc);
+            SaturationRectangleGradientstop.GradientStops[0].Color = argbColor;
+
+            s = (double)saturationSlider.Value;
+            l = .5;
+            HlsToRgb((double)h, l, s, out int rd, out int gd, out int bd);
+            argbColor = Color.FromArgb((byte)a, (byte)rd, (byte)gd, (byte)bd);
+            LightnessRectangleGradientstop.GradientStops[2].Color = argbColor;
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
