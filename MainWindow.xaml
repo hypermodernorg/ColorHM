@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:ColorHM"
         xmlns:Properties="clr-namespace:ColorHM.Properties" x:Name="ColorHM" x:Class="ColorHM.MainWindow"
         mc:Ignorable="d"
-        Title="ColorHM" Height="486.667" Width="565" MaxWidth="565" MinWidth="565" WindowTitleBrush="Black" Background="{x:Null}" EnableDWMDropShadow="True" TitleAlignment="Left" TitleCaps="False">
+        Title="ColorHM" Height="486.667" Width="565" MaxWidth="565" MinWidth="565" WindowTitleBrush="Black" Background="{x:Null}" TitleAlignment="Left" TitleCaps="False" BorderBrush="{DynamicResource borderBrush}">
     <Controls:MetroWindow.TitleForeground>
         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" SpreadMethod="Reflect">
             <GradientStop Color="#FFE80000" Offset="0"/>
@@ -114,4 +114,5 @@
         <Label Content="S" HorizontalAlignment="Left" Height="16" Margin="0.6,4.8,0,4.8" VerticalAlignment="Center" Width="28" Padding="0" Background="{x:Null}" Foreground="#FF909090" Grid.Column="6" Grid.Row="2"/>
         <Slider x:Name="saturationSlider" ValueChanged="HSL_Slider_ValueChanged" Minimum="0" Maximum="1" ToolTip="Lighten or darken a color." Style="{DynamicResource FlatSlider}" Margin="0.2,6.8,0.4,6.8" Grid.Column="4" Height="12" Grid.Row="2" VerticalAlignment="Center" Foreground="{x:Null}" BorderBrush="White" TickFrequency="0.01" Background="{x:Null}"/>
     </Grid>
+
 </Controls:MetroWindow>

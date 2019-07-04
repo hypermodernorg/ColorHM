@@ -26,7 +26,7 @@ namespace ColorHM
     {
         public MainWindow()
         {
-            //Todo For some reason the TopRectangle isnt initializing with a color. Fix it.
+           
             InitializeComponent();
             CleanScreenshots();
        
@@ -40,7 +40,8 @@ namespace ColorHM
             RectangleChange(c);
            
         }
-
+       
+       
         public void CleanScreenshots()
         {
             string screenShotDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\screenshots";
@@ -66,8 +67,8 @@ namespace ColorHM
             lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
             TopRectangle.Fill = brush;
             hexTextBox.Text = brush.ToString();
-        }
 
+        }
 
         // Gets the wrap pannel of the selected TabControl TabItem
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject rootObject) where T : DependencyObject
@@ -107,12 +108,13 @@ namespace ColorHM
             label.MouseLeftButtonDown += Label_MouseLeftButtonDown;
             ti.Header = label;
             TabControl1.Items.Add(ti);
+           
         }
 
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             dynamic label = sender;
-            dynamic tabItem = label.Parent;
+            TabItem tabItem = label.Parent as TabItem;
             var wcp = new WrapPanel();
 
             Thickness thickness = new Thickness
@@ -126,9 +128,8 @@ namespace ColorHM
             TextBox newPaletteTextBox = new TextBox
             {
                 BorderThickness = thickness,
-
                 Background = Brushes.Transparent,
-                Text = "Rename"
+                Text = "New Palette"
             };
 
             tabItem.Header = newPaletteTextBox;
@@ -136,10 +137,12 @@ namespace ColorHM
             MenuItem savePaletteMenuItem = new MenuItem();
             contextMenu.Items.Add(savePaletteMenuItem);
             savePaletteMenuItem.Header = "Save Palette";
-            savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
+            savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
             tabItem.ContextMenu = contextMenu;
             tabItem.Content = wcp;
+            tabItem.IsSelected = true;
             NewPalette();
+            SavePalette();
         }
         public void DeleteColor(object sender, RoutedEventArgs e)
         {
@@ -240,7 +243,7 @@ namespace ColorHM
                 contextMenu.Items.Add(savePaletteMenuItem);
                 contextMenu.Items.Add(deletePaletteMenuItem);
                 savePaletteMenuItem.Header = "Save Palette";
-                savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
+                savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
                 deletePaletteMenuItem.Header = "Delete Palette";
                 deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
 
@@ -304,7 +307,12 @@ namespace ColorHM
             GetPalettes();
 
         }
-        public void SavePalette(object sender, RoutedEventArgs e)
+        public void SavePaletteEvent(object sender, RoutedEventArgs e)
+        {
+            SavePalette();
+        }
+
+        public void SavePalette()
         {
 
             dynamic selectedTab = TabControl1.SelectedContent;
@@ -317,7 +325,7 @@ namespace ColorHM
             contextMenu.Items.Add(savePaletteMenuItem);
             contextMenu.Items.Add(deletePaletteMenuItem);
             savePaletteMenuItem.Header = "Save Palette";
-            savePaletteMenuItem.Click += new RoutedEventHandler(SavePalette);
+            savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
             deletePaletteMenuItem.Header = "Delete Palette";
             deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
 
@@ -364,11 +372,13 @@ namespace ColorHM
 
         }
 
+
+
         private void TopRectangle_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
-
+        //public System.Windows.Media.Color MyBrush { get; set; }
         private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
@@ -392,8 +402,11 @@ namespace ColorHM
                 var x = new SolidColorBrush(argbColor);
                 TopRectangle.Fill = x;
                 hexTextBox.Text = x.ToString();
- 
+                //MyBrush = argbColor;
+            
             }
+
+          
             s = 1;
             HlsToRgb((double)h, l, s, out int rb, out int gb, out int bb);
             argbColor = Color.FromArgb((byte)a, (byte)rb, (byte)gb, (byte)bb);
@@ -494,44 +507,12 @@ namespace ColorHM
 
 
         private void AddToPalette_Click(object sender, RoutedEventArgs e)
-        {
-            
+        { 
             var FirstWrapPanelInTabControl = FindVisualChildren<WrapPanel>(TabControl1).FirstOrDefault();
             Brush newBrush = TopRectangle.Fill;
             ColorHM.Properties.UserControl1 rec = CreateRectangle(newBrush); 
             FirstWrapPanelInTabControl.Children.Add(rec);
-            // new code
-
-            //Grid grid = FirstWrapPanelInTabControl.Parent as Grid;
-            TabItem tabitem = FirstWrapPanelInTabControl.Parent as TabItem;
-            string id = tabitem.Tag.ToString();
-
-            SQLiteConnection conn = Connect();
-            SQLiteCommand sqlite_cmd = conn.CreateCommand();
-            sqlite_cmd.CommandText = $"SELECT id, colors from palettes where id = '{id}'";
-            SQLiteDataAdapter dt = new SQLiteDataAdapter(sqlite_cmd);
-            DataTable palettesDT = new DataTable();
-            dt.Fill(palettesDT);
-            palettesDT = new DataTable();
-            dt.Fill(palettesDT);
-
-            StringBuilder paletteColors = new StringBuilder();
-            foreach (DataRow row in palettesDT.Rows)
-            {
-               string existingColorsString = row[1].ToString();
-
-
-
-
-                paletteColors.Append(existingColorsString + " ");
-                paletteColors.Append(newBrush.ToString() + " ");
-             
-
-            }
-            sqlite_cmd.CommandText = $"UPDATE palettes SET colors = '{paletteColors.ToString()}' WHERE id = {id}";
-            sqlite_cmd.ExecuteNonQuery();
-            conn.Close();
-
+            SavePalette(); // New or old palette
         }
 
         //! Convert an RGB value into an HLS value.

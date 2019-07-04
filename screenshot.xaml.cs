@@ -40,16 +40,12 @@ namespace ColorHM
             byte ga = (byte)((intColor >> 8) & 0xffL);
             byte r = (byte)(intColor & 0xffL);
             System.Windows.Media.Color color = System.Windows.Media.Color.FromRgb(r, ga, b);
-            //System.Windows.MessageBox.Show(color.ToString());
-       
-         
+
 
             MainWindow newRec = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             newRec.Show();
             newRec.RectangleChange(color);
             x.Parent.Parent.Close();
-            
-            //var mainWindow = MainWindow.
 
         }
 
@@ -62,13 +58,7 @@ namespace ColorHM
 
         private void ScreenshotImage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            double factor = System.Windows.PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
 
-            dynamic x = sender;
-            
-            System.Windows.Shapes.Rectangle rec = new System.Windows.Shapes.Rectangle();
-   
-   
             var xy = System.Windows.Forms.Cursor.Position;
             var xyb = new System.Windows.Point(xy.X, xy.Y);
  
@@ -88,10 +78,7 @@ namespace ColorHM
             position.Top = (int)xyc.Y -70;
             position.Left = (int)xyc.X -70;
             shRec.Margin = position;
-
-            
            
-
         }
     }
 }
