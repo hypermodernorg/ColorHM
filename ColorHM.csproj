@@ -107,6 +107,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Copy.cs" />
     <Compile Include="EyeDrop.cs" />
     <Compile Include="Properties\AddNewTabItem.xaml.cs">
       <DependentUpon>AddNewTabItem.xaml</DependentUpon>
@@ -121,6 +122,7 @@
     <Compile Include="Screenshot.xaml.cs">
       <DependentUpon>Screenshot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SliderChanged.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
