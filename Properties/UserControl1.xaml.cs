@@ -26,29 +26,24 @@ namespace ColorHM.Properties
                 dynamic fill = rec.Fill;
                 dynamic color = fill.Color;
 
-              
                 Color c = (Color)ColorConverter.ConvertFromString(fill.ToString());
-                //var cHex = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-                //var cRgb = "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
-                
 
-                //Todo Add hsl support.
                 x.TopRectangle.Fill = fill;
                 x.redSlider.Value = c.R; x.redTextBox.Text = c.R.ToString();
                 x.greenSlider.Value = c.G; x.greenTextBox.Text = c.G.ToString();
                 x.blueSlider.Value = c.B; x.blueTextBox.Text = c.B.ToString(); 
                 x.alphaSlider.Value = c.A; x.alphaTextBox.Text = c.A.ToString();
                 x.hexTextBox.Text = color.ToString();
-
-            }
-
-            
+                ColorHM.RGBandHSL.RgbToHls(c.R, c.G, c.B, out double h, out double l, out double s);
+                x.hueSlider.Value = h; x.hueTextBox.Text = h.ToString();
+                x.lightnesSlider.Value = l; x.lightnessTextBox.Text = (l*100).ToString();
+                x.saturationSlider.Value = s; x.saturationTextBox.Text = (s*100).ToString();
+            }  
         }
 
         private void RectangleUC_MouseEnter(object sender, MouseEventArgs e)
         {
             SolidColorBrush brush = new SolidColorBrush();
-
 
             Color color = new Color
             {
@@ -66,7 +61,6 @@ namespace ColorHM.Properties
         {
             SolidColorBrush brush = new SolidColorBrush();
 
-
             Color color = new Color
             {
                 R = 0,
@@ -79,8 +73,5 @@ namespace ColorHM.Properties
             rectangleUC.Stroke = brush;
      
         }
-
-
     }
-
 }

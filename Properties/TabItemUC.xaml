@@ -8,7 +8,10 @@
 
     <TabItem x:Name="tih" Padding="0">
         <TabItem.Header>
-            <TextBox x:Name="htb"></TextBox>
+        
+                <TextBox x:Name="htb" Background="Red"></TextBox>
+
+
         </TabItem.Header>
         <Grid Background="#FFE5E5E5">
             <WrapPanel Background="White" ScrollViewer.CanContentScroll="True"/>

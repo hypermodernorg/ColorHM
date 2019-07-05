@@ -117,6 +117,7 @@
     <Compile Include="Properties\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RGBandHSL.cs" />
     <Compile Include="Screenshot.xaml.cs">
       <DependentUpon>Screenshot.xaml</DependentUpon>
     </Compile>
