@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -133,7 +134,6 @@ namespace ColorHM
                 
             };
            
-
             tabItem.Header = newPaletteTextBox;
             ContextMenu contextMenu = new ContextMenu();
             MenuItem savePaletteMenuItem = new MenuItem();
@@ -252,7 +252,6 @@ namespace ColorHM
                 deletePaletteMenuItem.Header = "Delete Palette";
                 deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
 
-
                 Thickness thickness = new Thickness
                 {
                     Bottom = 0,
@@ -260,15 +259,15 @@ namespace ColorHM
                     Left = 0,
                     Right = 0
                 };
+
                 TextBox newPaletteTextBox = new TextBox
                 {
                     BorderThickness = thickness,
 
                     Background = Brushes.Transparent,
                     Text = row["palette_name"].ToString(),
-                  
-
                 };
+
                 string paletteID = row["id"].ToString();
                 string colors = row["colors"].ToString();
                 List<string> colorList = colors.Split(null).ToList();
@@ -459,9 +458,7 @@ namespace ColorHM
                 Color rC = (Color)ColorConverter.ConvertFromString(r.ToString());
                 var rHex = "#" + hexValueR + rC.R.ToString("X2") + rC.G.ToString("X2") + rC.B.ToString("X2");
                 Color rColor = (Color)ColorConverter.ConvertFromString(rHex);
-                //redSlider.Background = new SolidColorBrush(rColor);
                 redSlider.Foreground = new SolidColorBrush(rColor);
-
 
                 Brush g = greenSlider.Foreground;
                 string hexValueG = cG.ToString("X2");
@@ -484,15 +481,11 @@ namespace ColorHM
                 Color aColor = (Color)ColorConverter.ConvertFromString(aHex);
                 alphaSlider.Foreground = new SolidColorBrush(aColor);
 
-
-                Color c = (Color)ColorConverter.ConvertFromString(x.ToString());
-                //var cHex = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
                 Color argbColor = Color.FromArgb((byte)cA, (byte)cR, (byte)cG, (byte)cB);
                 x = new SolidColorBrush(argbColor);
                 TopRectangle.Fill = x;
                 hexTextBox.Text = x.ToString();
-                //var cRgb = "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
-                //MessageBox.Show(cRgb);
+
             }
         }
 
@@ -523,6 +516,19 @@ namespace ColorHM
             SavePalette(); // New or old palette
         }
 
+        private void HexTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string text = hexTextBox.Text;
+            if (hexTextBox.IsFocused == true)
+            {
 
+            
+                if (Regex.Match(text, @"^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$").Success)
+                {
+                    Color color = (Color)ColorConverter.ConvertFromString(text);
+                    RectangleChange(color);
+                }
+            }
+        }
     }
 }

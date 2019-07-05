@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 
 namespace ColorHM.Properties
@@ -22,10 +23,10 @@ namespace ColorHM.Properties
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 dynamic x = Application.Current.MainWindow;
-                dynamic rec = sender;
+                Rectangle rec = sender as Rectangle;
                 dynamic fill = rec.Fill;
                 dynamic color = fill.Color;
-
+         
                 Color c = (Color)ColorConverter.ConvertFromString(fill.ToString());
 
                 x.TopRectangle.Fill = fill;
@@ -38,6 +39,7 @@ namespace ColorHM.Properties
                 x.hueSlider.Value = h; x.hueTextBox.Text = h.ToString();
                 x.lightnesSlider.Value = l; x.lightnessTextBox.Text = (l*100).ToString();
                 x.saturationSlider.Value = s; x.saturationTextBox.Text = (s*100).ToString();
+              
             }  
         }
 
