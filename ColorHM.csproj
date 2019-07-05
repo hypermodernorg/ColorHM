@@ -107,22 +107,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Copy.cs" />
-    <Compile Include="EyeDrop.cs" />
-    <Compile Include="Properties\AddNewTabItem.xaml.cs">
-      <DependentUpon>AddNewTabItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\TabItemUC.xaml.cs">
-      <DependentUpon>TabItemUC.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="cs\Copy.cs" />
+    <Compile Include="cs\EyeDrop.cs" />
     <Compile Include="Properties\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RGBandHSL.cs" />
+    <Compile Include="cs\RGBandHSL.cs" />
     <Compile Include="Screenshot.xaml.cs">
       <DependentUpon>Screenshot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SliderChanged.cs" />
+    <Compile Include="cs\ValuesChanged.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -135,14 +129,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Properties\AddNewTabItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Properties\TabItemUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Properties\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,6 +174,7 @@
       <CustomToolNamespace>hue</CustomToolNamespace>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

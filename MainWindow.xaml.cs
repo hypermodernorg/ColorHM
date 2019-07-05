@@ -53,7 +53,6 @@ namespace ColorHM
             {
                 File.Delete(filePath);
             }
-
         }
 
         //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -111,8 +110,8 @@ namespace ColorHM
             label.MouseLeftButtonDown += Label_MouseLeftButtonDown;
             ti.Header = label;
             TabControl1.Items.Add(ti);
-           
         }
+
 
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -133,7 +132,6 @@ namespace ColorHM
                 BorderThickness = thickness,
                 Background = Brushes.Transparent,
                 Text = "New Palette",
-                
             };
            
             tabItem.Header = newPaletteTextBox;
@@ -265,22 +263,14 @@ namespace ColorHM
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem savePaletteMenuItem = new MenuItem();
                 MenuItem deletePaletteMenuItem = new MenuItem();
-                //MenuItem copyHexPaletteMenuItem = new MenuItem();
-                //MenuItem copyHexAPaletteMenuItem = new MenuItem();
 
                 contextMenu.Items.Add(savePaletteMenuItem);
                 contextMenu.Items.Add(deletePaletteMenuItem);
-                //contextMenu.Items.Add(copyHexPaletteMenuItem);
-                //contextMenu.Items.Add(copyHexAPaletteMenuItem);
 
                 savePaletteMenuItem.Header = "Save Palette";
                 savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
                 deletePaletteMenuItem.Header = "Delete Palette";
                 deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
-                //copyHexPaletteMenuItem.Header = "Copy Hex";
-                //copyHexPaletteMenuItem.Click += new RoutedEventHandler(CopyHex);
-                //copyHexAPaletteMenuItem.Header = "Copy Hex with Alpha";
-                //copyHexAPaletteMenuItem.Click += new RoutedEventHandler(CopyHexA);
 
                 Thickness thickness = new Thickness
                 {
@@ -405,15 +395,7 @@ namespace ColorHM
 
         }
 
-
-
-        private void TopRectangle_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Eyedrop_Button_Click(object sender, RoutedEventArgs e)
         {
             EyeDrop ss = new EyeDrop();
             ss.TakeScreenShot();
@@ -439,22 +421,6 @@ namespace ColorHM
             FirstWrapPanelInTabControl.Children.Add(rec);
             SavePalette(); // New or old palette
         }
-
-        private void HexTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string text = hexTextBox.Text;
-            if (hexTextBox.IsFocused == true)
-            {
-
-            
-                if (Regex.Match(text, @"^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$").Success)
-                {
-                    Color color = (Color)ColorConverter.ConvertFromString(text);
-                    RectangleChange(color);
-                }
-            }
-        }
-
 
 
     }
