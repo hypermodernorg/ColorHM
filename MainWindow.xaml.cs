@@ -209,9 +209,26 @@ namespace ColorHM
         {
             ContextMenu recContextMenu = new ContextMenu();
             MenuItem deleteRec = new MenuItem();
+            MenuItem copyHexPaletteMenuItem = new MenuItem();
+            MenuItem copyHexAPaletteMenuItem = new MenuItem();
+            MenuItem copyRGBPaletteMenuItem = new MenuItem();
+            MenuItem copyHSLPaletteMenuItem = new MenuItem();
+
             deleteRec.Header = "Delete Color";
             deleteRec.Click += new RoutedEventHandler(DeleteColor);
+            copyHexPaletteMenuItem.Header = "Copy Hex";
+            copyHexPaletteMenuItem.Click += new RoutedEventHandler(CopyHex);
+            copyHexAPaletteMenuItem.Header = "Copy Hex with Alpha";
+            copyHexAPaletteMenuItem.Click += new RoutedEventHandler(CopyHexA);
+            copyRGBPaletteMenuItem.Header = "Copy RGB";
+            copyRGBPaletteMenuItem.Click += new RoutedEventHandler(CopyRGB);
+            copyHSLPaletteMenuItem.Header = "Copy HSL";
+            copyHSLPaletteMenuItem.Click += new RoutedEventHandler(CopyHSL);
 
+            recContextMenu.Items.Add(copyHexPaletteMenuItem);
+            recContextMenu.Items.Add(copyHexAPaletteMenuItem);
+            recContextMenu.Items.Add(copyRGBPaletteMenuItem);
+            recContextMenu.Items.Add(copyHSLPaletteMenuItem);
             recContextMenu.Items.Add(deleteRec);
 
             return recContextMenu;
@@ -242,15 +259,26 @@ namespace ColorHM
             {
                 var ti = new TabItem();
                 var wcp = new WrapPanel();
+
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem savePaletteMenuItem = new MenuItem();
                 MenuItem deletePaletteMenuItem = new MenuItem();
+                //MenuItem copyHexPaletteMenuItem = new MenuItem();
+                //MenuItem copyHexAPaletteMenuItem = new MenuItem();
+
                 contextMenu.Items.Add(savePaletteMenuItem);
                 contextMenu.Items.Add(deletePaletteMenuItem);
+                //contextMenu.Items.Add(copyHexPaletteMenuItem);
+                //contextMenu.Items.Add(copyHexAPaletteMenuItem);
+
                 savePaletteMenuItem.Header = "Save Palette";
                 savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
                 deletePaletteMenuItem.Header = "Delete Palette";
                 deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
+                //copyHexPaletteMenuItem.Header = "Copy Hex";
+                //copyHexPaletteMenuItem.Click += new RoutedEventHandler(CopyHex);
+                //copyHexAPaletteMenuItem.Header = "Copy Hex with Alpha";
+                //copyHexAPaletteMenuItem.Click += new RoutedEventHandler(CopyHexA);
 
                 Thickness thickness = new Thickness
                 {
@@ -301,8 +329,6 @@ namespace ColorHM
         public void DeletePalette(object sender, RoutedEventArgs e)
         {
             TabItem tab = TabControl1.SelectedItem as TabItem;
-
-            MessageBox.Show(tab.Tag.ToString());
             SQLiteConnection conn = Connect();
             SQLiteCommand sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = $"DELETE FROM palettes WHERE id={tab.Tag}";
@@ -530,5 +556,51 @@ namespace ColorHM
                 }
             }
         }
+
+
+        private void CopyHex(object sender, RoutedEventArgs e)
+        {
+            MenuItem x = sender as MenuItem;
+            ContextMenu y = x.Parent as ContextMenu;
+            Rectangle rec = y.PlacementTarget as Rectangle;
+            SolidColorBrush brush = rec.Fill as SolidColorBrush;
+            Color color = brush.Color;
+
+            var hexString = color.ToString().Remove(1, 2);
+            Clipboard.SetText(hexString);
+        }
+        private void CopyHexA(object sender, RoutedEventArgs e)
+        {
+            MenuItem x = sender as MenuItem;
+            ContextMenu y = x.Parent as ContextMenu;
+            Rectangle rec = y.PlacementTarget as Rectangle;
+            SolidColorBrush brush = rec.Fill as SolidColorBrush;
+            Color color = brush.Color;
+
+            Clipboard.SetText(hexTextBox.Text);
+        }
+        private void CopyRGB(object sender, RoutedEventArgs e)
+        {
+            MenuItem x = sender as MenuItem;
+            ContextMenu y = x.Parent as ContextMenu;
+            Rectangle rec = y.PlacementTarget as Rectangle;
+            SolidColorBrush brush = rec.Fill as SolidColorBrush;
+            Color color = brush.Color;
+
+            Clipboard.SetText("rgb (" + color.R.ToString() + ", " + color.G.ToString() + ", " + color.B.ToString() + ")");
+        }
+        private void CopyHSL(object sender, RoutedEventArgs e)
+        {
+            MenuItem x = sender as MenuItem;
+            ContextMenu y = x.Parent as ContextMenu;
+            Rectangle rec = y.PlacementTarget as Rectangle;
+            SolidColorBrush brush = rec.Fill as SolidColorBrush;
+            Color color = brush.Color;
+
+            RGBandHSL.RgbToHls((int)color.R, (int)color.G, (int)color.B, out double h, out double l, out double s);
+            Clipboard.SetText("hsl (" + Math.Round(h).ToString() + ", " + "%" + (Convert.ToInt32(s*100)).ToString() + ", " + "%" + (Convert.ToInt32(l * 100)).ToString() + ")");
+        }
+
+
     }
 }
