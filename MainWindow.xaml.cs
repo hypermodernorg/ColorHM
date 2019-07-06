@@ -32,13 +32,16 @@ namespace ColorHM
             CleanScreenshots();
        
             GetPalettes();
-            Color c = new Color();
-            c.R = 82;
-            c.G = 212;
-            c.B = 192;
-            c.A = 255;
+            Color color = new Color
+            {
+                R = 82,
+                G = 212,
+                B = 192,
+                A = 255
+            };
 
-            RectangleChange(c);
+            //RectangleChange(c);
+            RectangleChangeControl(color);
            
         }
        

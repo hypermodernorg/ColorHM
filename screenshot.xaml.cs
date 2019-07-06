@@ -44,7 +44,8 @@ namespace ColorHM
 
             MainWindow newRec = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             newRec.Show();
-            newRec.RectangleChange(color);
+            //newRec.RectangleChange(color);
+            newRec.RectangleChangeControl(color);
             x.Parent.Parent.Close();
 
         }
