@@ -22,22 +22,148 @@ namespace ColorHM
 {
     public partial class MainWindow
     {
-        //public System.Windows.Media.Color MyBrush { get; set; }
-        private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        //Todo There has to be a better way to coordinate all of these controls and values.
+        // Update all of the control color related fields with the color passed to this method, then update the top rectangle.
+
+        public void RectangleChangeControl(Color color)
+        {
+            Brush brush = new SolidColorBrush(color);
+
+            if (hueSlider.IsFocused == true || saturationSlider.IsFocused == true || lightnesSlider.IsFocused == true)
+            {
+                HUEChangeText(color);
+                RGBChangeSlider(color);
+                RGBChangeText(color);
+                HEXChangeText(color);
+
+            }
+
+            if (hueTextBox.IsFocused == true || saturationTextBox.IsFocused == true || lightnessTextBox.IsFocused == true)
+            {
+                HSLChangeSlider(color);
+                RGBChangeSlider(color);
+                RGBChangeText(color);
+                HEXChangeText(color);
+            }
+
+            if (redSlider.IsFocused == true || greenSlider.IsFocused == true || blueSlider.IsFocused == true || alphaSlider.IsFocused == true)
+            {
+                HSLChangeText(color);
+                HSLChangeSlider(color);
+                RGBChangeText(color);
+                HEXChangeText(color);
+            }
+
+            if (redTextBox.IsFocused == true || greenTextBox.IsFocused == true || blueTextBox.IsFocused == true || alphaTextBox.IsFocused == true)
+            {
+                HSLChangeText(color);
+                RGBChangeSlider(color);
+                HSLChangeSlider(color);
+                HEXChangeText(color);
+            }
+
+            if (hexTextBox.IsFocused == true)
+            {
+                HSLChangeText(color);
+                RGBChangeSlider(color);
+                HSLChangeSlider(color);
+                RGBChangeText(color);
+            }
+
+            if (color.ToString() == "came from palette click")
+            {
+                HSLChangeText(color);
+                RGBChangeSlider(color);
+                HSLChangeSlider(color);
+                HEXChangeText(color);
+                RGBChangeText(color);
+            }
+
+            if (color.ToString() == "came from eyedrop")
+            {
+                HSLChangeText(color);
+                RGBChangeSlider(color);
+                HSLChangeSlider(color);
+                HEXChangeText(color);
+                RGBChangeText(color);
+            }
+
+            TopRectangle.Fill = brush;
+        }
+
+        private void HSLChangeText(Color color)
         {
 
+        }
+
+        private void HSLChangeSlider(Color color)
+        {
+
+        }
+
+        private void RGBChangeSlider(Color color)
+        {
+
+        }
+
+        private void HEXChangeText(Color color)
+        {
+
+        }
+
+        private void RGBChangeText(Color color)
+        {
+
+        }
+
+
+
+        //! Old method of values change below this comment
+        public void RectangleChange(Color color)
+        {
+            Brush brush = new SolidColorBrush(color);
+
+            // update rgb sliders and textboxes
+            redSlider.Value = (int)color.R; redTextBox.Text = color.R.ToString();
+            greenSlider.Value = (int)color.G; greenTextBox.Text = color.G.ToString();
+            blueSlider.Value = (int)color.B; blueTextBox.Text = color.B.ToString();
+            alphaSlider.Value = (int)color.A; alphaTextBox.Text = color.A.ToString();
+
+            // convert rgb to hsl
+            RGBandHSL.RgbToHls((int)color.R, (int)color.G, (int)color.B, out double h, out double l, out double s);
+
+            // update hsl sliders and textboxes
+            hueTextBox.Text = h.ToString(); hueSlider.Value = h;
+            saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
+            lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
+
+            // update the hexttextbox
+            hexTextBox.Text = brush.ToString();
+
+            // fill the top rectangle with the color passed to this method.
+            TopRectangle.Fill = brush;
+        }
+
+        // If the hsl slider's change update the color controls and top rectangle respectively.
+        private void HSL_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            // Get the hsl slider values
             int h = (int)hueSlider.Value;
             double s = (double)saturationSlider.Value;
             double l = lightnesSlider.Value;
+
+            // Get the alpha slider value for compatability with Color.FromArgb
             int a = (int)alphaSlider.Value;
+
+
             Color argbColor = new Color();
+
             //! Prevent the recursion error between rgba sliders and hsl sliders
             if (hueSlider.IsFocused == true || saturationSlider.IsFocused == true || lightnesSlider.IsFocused == true)
             {
                 hueTextBox.Text = h.ToString();
                 saturationTextBox.Text = s.ToString();
                 lightnessTextBox.Text = l.ToString();
-
 
                 RGBandHSL.HlsToRgb((double)h, l, s, out int r, out int g, out int b);
                 redSlider.Value = r; redTextBox.Text = r.ToString();
@@ -48,21 +174,23 @@ namespace ColorHM
                 var x = new SolidColorBrush(argbColor);
                 TopRectangle.Fill = x;
                 hexTextBox.Text = x.ToString();
-                //MyBrush = argbColor;
 
             }
 
-
+            // get the rightmost saturation slider gradientstop
             s = 1;
             RGBandHSL.HlsToRgb((double)h, l, s, out int rb, out int gb, out int bb);
             argbColor = Color.FromArgb((byte)a, (byte)rb, (byte)gb, (byte)bb);
             SaturationRectangleGradientstop.GradientStops[1].Color = argbColor;
 
+            // get the leftmost saturation slider gradientstop
             s = 0;
             RGBandHSL.HlsToRgb((double)h, l, s, out int rc, out int gc, out int bc);
             argbColor = Color.FromArgb((byte)a, (byte)rc, (byte)gc, (byte)bc);
             SaturationRectangleGradientstop.GradientStops[0].Color = argbColor;
 
+            // get the middle lightness slider gradientstop, the first and last stop are black and white.
+            // the middle gradient should be the values of saturation and hue, where lightness is held at .5.
             s = (double)saturationSlider.Value;
             l = .5;
             RGBandHSL.HlsToRgb((double)h, l, s, out int rd, out int gd, out int bd);

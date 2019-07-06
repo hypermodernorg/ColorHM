@@ -56,21 +56,7 @@ namespace ColorHM
         }
 
         //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        public void RectangleChange(Color color)
-        {
-            Brush brush = new SolidColorBrush(color);
-            redSlider.Value = (int)color.R; redTextBox.Text = color.R.ToString();
-            greenSlider.Value = (int)color.G; greenTextBox.Text = color.G.ToString();
-            blueSlider.Value = (int)color.B; blueTextBox.Text = color.B.ToString();
-            alphaSlider.Value = (int)color.A; alphaTextBox.Text = color.A.ToString();
-            RGBandHSL.RgbToHls((int)color.R, (int)color.G, (int)color.B, out double h, out double l, out double s);
-            hueTextBox.Text = h.ToString(); hueSlider.Value = h;
-            saturationTextBox.Text = s.ToString(); saturationSlider.Value = s;
-            lightnessTextBox.Text = l.ToString(); lightnesSlider.Value = l;
-            TopRectangle.Fill = brush;
-            hexTextBox.Text = brush.ToString();
 
-        }
 
         // Gets the wrap pannel of the selected TabControl TabItem
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject rootObject) where T : DependencyObject
@@ -421,7 +407,5 @@ namespace ColorHM
             FirstWrapPanelInTabControl.Children.Add(rec);
             SavePalette(); // New or old palette
         }
-
-
     }
 }
