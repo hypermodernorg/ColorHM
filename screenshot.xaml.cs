@@ -62,22 +62,26 @@ namespace ColorHM
 
             var xy = System.Windows.Forms.Cursor.Position;
             var xyb = new System.Windows.Point(xy.X, xy.Y);
- 
+            var xyc = this.PointFromScreen(xyb);
+
             var hdc = GetWindowDC(0);
             var intColor = GetPixel(hdc, xy.X, xy.Y);
             byte b = (byte)((intColor >> 0x10) & 0xffL);
             byte ga = (byte)((intColor >> 8) & 0xffL);
             byte r = (byte)(intColor & 0xffL);
+
             System.Windows.Media.Color color = System.Windows.Media.Color.FromRgb(r, ga, b);
             SolidColorBrush brush = new SolidColorBrush(color);
             shRec.Width = 60;
             shRec.Height = 60;
             shRec.Fill = brush;
-            Thickness position = new Thickness();
 
-            var xyc = this.PointFromScreen(xyb);
-            position.Top = (int)xyc.Y -70;
-            position.Left = (int)xyc.X -70;
+            Thickness position = new Thickness
+            {
+                Top = (int)xyc.Y - 70,
+                Left = (int)xyc.X - 70
+            };
+
             shRec.Margin = position;
            
         }
