@@ -27,11 +27,10 @@ namespace ColorHM
     {
         public MainWindow()
         {
-           
             InitializeComponent();
             CleanScreenshots();
-       
             GetPalettes();
+
             Color color = new Color
             {
                 R = 82,
@@ -40,9 +39,7 @@ namespace ColorHM
                 A = 255
             };
 
-            //RectangleChange(c);
             RectangleChangeControl(color);
-           
         }
        
        
@@ -57,9 +54,6 @@ namespace ColorHM
                 File.Delete(filePath);
             }
         }
-
-        //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-
 
         // Gets the wrap pannel of the selected TabControl TabItem
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject rootObject) where T : DependencyObject
@@ -96,13 +90,13 @@ namespace ColorHM
 
             Label label = new Label();
             label.Content = paletteName;
-            label.MouseLeftButtonDown += Label_MouseLeftButtonDown;
+            label.MouseLeftButtonDown += NewPalette_Label_MouseLeftButtonDown;
             ti.Header = label;
             TabControl1.Items.Add(ti);
         }
 
 
-        private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void NewPalette_Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             dynamic label = sender;
             TabItem tabItem = label.Parent as TabItem;
@@ -120,7 +114,7 @@ namespace ColorHM
             {
                 BorderThickness = thickness,
                 Background = Brushes.Transparent,
-                Text = "New Palette",
+                Text = "NewPalette",
             };
            
             tabItem.Header = newPaletteTextBox;
@@ -223,6 +217,20 @@ namespace ColorHM
             return recContextMenu;
         }
 
+        public ContextMenu PaletteContextMenu()
+        {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem savePaletteMenuItem = new MenuItem();
+            MenuItem deletePaletteMenuItem = new MenuItem();
+            contextMenu.Items.Add(savePaletteMenuItem);
+            contextMenu.Items.Add(deletePaletteMenuItem);
+            savePaletteMenuItem.Header = "Save Palette";
+            savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
+            deletePaletteMenuItem.Header = "Delete Palette";
+            deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
+            return contextMenu;
+        }
+
         //! Get all palettes, create new if none exist.
         public void GetPalettes()
         {
@@ -249,18 +257,7 @@ namespace ColorHM
                 var ti = new TabItem();
                 var wcp = new WrapPanel();
 
-                ContextMenu contextMenu = new ContextMenu();
-                MenuItem savePaletteMenuItem = new MenuItem();
-                MenuItem deletePaletteMenuItem = new MenuItem();
-
-                contextMenu.Items.Add(savePaletteMenuItem);
-                contextMenu.Items.Add(deletePaletteMenuItem);
-
-                savePaletteMenuItem.Header = "Save Palette";
-                savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
-                deletePaletteMenuItem.Header = "Delete Palette";
-                deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
-
+                ContextMenu contextMenu = PaletteContextMenu();
                 Thickness thickness = new Thickness
                 {
                     Bottom = 0,
@@ -331,16 +328,7 @@ namespace ColorHM
             dynamic selectedTabHeader = TabControl1.SelectedItem;
             string selectedTabHeaderText = selectedTabHeader.Header.Text.ToString();
 
-            ContextMenu contextMenu = new ContextMenu();
-            MenuItem savePaletteMenuItem = new MenuItem();
-            MenuItem deletePaletteMenuItem = new MenuItem();
-            contextMenu.Items.Add(savePaletteMenuItem);
-            contextMenu.Items.Add(deletePaletteMenuItem);
-            savePaletteMenuItem.Header = "Save Palette";
-            savePaletteMenuItem.Click += new RoutedEventHandler(SavePaletteEvent);
-            deletePaletteMenuItem.Header = "Delete Palette";
-            deletePaletteMenuItem.Click += new RoutedEventHandler(DeletePalette);
-
+            ContextMenu contextMenu = PaletteContextMenu();
             selectedTabHeader.ContextMenu = contextMenu;
 
             dynamic wrapChildren = selectedTab.Children;
@@ -355,7 +343,6 @@ namespace ColorHM
             SQLiteConnection conn = Connect();
             SQLiteCommand sqlite_cmd = conn.CreateCommand();
             SQLiteCommand sqlite_cmdB = conn.CreateCommand();
-
 
             //! If there is no tag in the tabitem.
             //! Since when a new palette is created, the palette is not yet assigned a tag, give it a tag.

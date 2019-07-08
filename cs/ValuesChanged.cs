@@ -237,7 +237,7 @@ namespace ColorHM
                 if (Regex.Match(text, @"^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$").Success)
                 {
                     Color color = (Color)ColorConverter.ConvertFromString(text);
-          ;
+          
                     RectangleChangeControl(color);
                 }
             }
