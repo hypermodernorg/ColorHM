@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
 using System.Data.SQLite;
+using System.Security.AccessControl;
 
 namespace ColorHM
 {
@@ -28,6 +29,16 @@ namespace ColorHM
         public MainWindow()
         {
             InitializeComponent();
+            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "ColorHM" + System.IO.Path.DirectorySeparatorChar + "colors.db"))
+            {
+                DirectorySecurity securityRules = new DirectorySecurity();
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                                          System.IO.Path.DirectorySeparatorChar + "ColorHM");
+
+                string sourceFile = AppDomain.CurrentDomain.BaseDirectory + System.IO.Path.DirectorySeparatorChar + "db" + System.IO.Path.DirectorySeparatorChar + "colors.db";
+                string destFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "ColorHM" + System.IO.Path.DirectorySeparatorChar + "colors.db";
+                File.Copy(sourceFile, destFile, true);
+            }
             CleanScreenshots();
             GetPalettes();
 
@@ -76,7 +87,10 @@ namespace ColorHM
         public SQLiteConnection Connect()
         {
             SQLiteConnection conn;
-            string dbDirectory = AppDomain.CurrentDomain.BaseDirectory + "db\\colors.db";
+
+            //Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "ColorHM" + System.IO.Path.DirectorySeparatorChar + "ColorHM.db";
+            //string dbDirectory = AppDomain.CurrentDomain.BaseDirectory + "db\\colors.db";
+            string dbDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "ColorHM" + System.IO.Path.DirectorySeparatorChar + "colors.db";
             conn = new SQLiteConnection("Data Source=" + dbDirectory + "; Version=3;New=True;Compress=True;");
             conn.Open();
             return conn;
