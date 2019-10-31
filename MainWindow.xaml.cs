@@ -56,7 +56,8 @@ namespace ColorHM
        
         public void CleanScreenshots()
         {
-            string screenShotDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\screenshots";
+            //string screenShotDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\screenshots";
+            string screenShotDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "ColorHM" + System.IO.Path.DirectorySeparatorChar + "Screenshots";
             Directory.CreateDirectory(screenShotDirectory);
             string[] filePaths = Directory.GetFiles(screenShotDirectory);
 
